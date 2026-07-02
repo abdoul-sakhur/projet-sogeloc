@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_shared_social_links",
+  "info": {
+    "displayName": "Social Links",
+    "icon": "earth"
+  },
+  "options": {},
+  "attributes": {
+    "facebook": {
+      "type": "string"
+    },
+    "instagram": {
+      "type": "string"
+    },
+    "twitter": {
+      "type": "string"
+    },
+    "linkedin": {
+      "type": "string"
+    }
+  }
+}

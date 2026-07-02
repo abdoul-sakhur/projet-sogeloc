@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_sections_heroes",
+  "info": {
+    "displayName": "Hero Slider",
+    "icon": "images"
+  },
+  "options": {},
+  "attributes": {
+    "slides": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::hero-slide.hero-slide"
+    }
+  }
+}

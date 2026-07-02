@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contact_messages",
+  "info": {
+    "singularName": "contact-message",
+    "pluralName": "contact-messages",
+    "displayName": "Contact Message",
+    "description": "Messages envoyés via le formulaire de contact"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fullName": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "message": {
+      "type": "text",
+      "required": true
+    },
+    "isRead": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

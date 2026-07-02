@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_sections_page_titles",
+  "info": {
+    "displayName": "Page Title Banner",
+    "icon": "landscape"
+  },
+  "options": {},
+  "attributes": {
+    "subtitle": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_sections_services_grids",
+  "info": {
+    "displayName": "Services Grid",
+    "icon": "apps"
+  },
+  "options": {},
+  "attributes": {
+    "subtitle": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "services": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service.service"
+    }
+  }
+}

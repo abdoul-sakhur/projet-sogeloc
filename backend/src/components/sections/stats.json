@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_sections_stats",
+  "info": {
+    "displayName": "Stats Banner",
+    "icon": "chartCircle"
+  },
+  "options": {},
+  "attributes": {
+    "subtitle": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "backgroundImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "counters": {
+      "type": "component",
+      "component": "shared.counter-item",
+      "repeatable": true
+    }
+  }
+}

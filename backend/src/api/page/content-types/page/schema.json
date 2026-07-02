@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pages",
+  "info": {
+    "singularName": "page",
+    "pluralName": "pages",
+    "displayName": "Page",
+    "description": "Pages principales du site, construites avec des sections dynamiques"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
+    },
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.page-title",
+        "sections.hero",
+        "sections.about",
+        "sections.services-grid",
+        "sections.projects-grid",
+        "sections.team-grid",
+        "sections.stats",
+        "sections.contact",
+        "sections.cta-banner"
+      ]
+    }
+  }
+}

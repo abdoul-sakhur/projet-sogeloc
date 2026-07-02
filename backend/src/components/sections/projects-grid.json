@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_sections_projects_grids",
+  "info": {
+    "displayName": "Projects Grid",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "subtitle": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "featuredOnly": {
+      "type": "boolean",
+      "default": false
+    },
+    "projects": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::project.project"
+    }
+  }
+}

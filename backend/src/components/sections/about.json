@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_sections_abouts",
+  "info": {
+    "displayName": "About",
+    "icon": "information"
+  },
+  "options": {},
+  "attributes": {
+    "subtitle": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "videoUrl": {
+      "type": "string"
+    },
+    "videoLabel": {
+      "type": "string"
+    },
+    "cta": {
+      "type": "component",
+      "component": "shared.cta",
+      "repeatable": false
+    }
+  }
+}

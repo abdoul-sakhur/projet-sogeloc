@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #1b1a1a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Palette de marque ARTEMIS Construction & Travaux (voir CONTENU_EXTRAIT.md #1) */
+  --color-primary: #ff6e00;
+  --color-primary-hover: #732500;
+  --color-primary-alt: #f5570e;
+  --color-dark: #1b1a1a;
+  --color-secondary: #434343;
+  --color-body: #9b9b9b;
+  --color-text-alt: #333333;
+  --color-border: #eaeaea;
+  --color-surface: #f9f9f9;
+  --color-surface-alt: #f4f4f4;
+
+  --font-heading: var(--font-barlow);
+  --font-sans: var(--font-roboto);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-body);
+  font-family: var(--font-sans);
+  font-size: 15px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-dark);
+}
