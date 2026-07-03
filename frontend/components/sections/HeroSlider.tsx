@@ -43,9 +43,10 @@ export default function HeroSlider({ section }: { section: HeroSection }) {
       {/* Voile sombre pour la lisibilité du texte, dégradé vers la droite */}
       <div className="absolute inset-0 bg-gradient-to-r from-dark/85 via-dark/50 to-transparent" />
 
-      {/* Panneau diagonal aux couleurs de la marque, à droite */}
+      {/* Panneau diagonal aux couleurs de la marque, à droite (masqué sur mobile
+          pour ne pas recouvrir le texte, qui n'a pas de colonne dédiée en dessous de md) */}
       <div
-        className="absolute inset-y-0 right-0 w-full md:w-[48%]"
+        className="absolute inset-y-0 right-0 hidden w-[48%] md:block"
         style={{
           background: "linear-gradient(135deg, var(--color-primary-alt), var(--color-primary))",
           clipPath: "polygon(22% 0%, 100% 0%, 100% 100%, 0% 100%)",

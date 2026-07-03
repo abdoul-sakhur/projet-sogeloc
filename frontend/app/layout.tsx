@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Barlow, Roboto } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { fetchSettings, strapiMediaUrl } from "@/lib/api";
+import { FALLBACK_SETTINGS } from "@/lib/constants";
 import "./globals.css";
 
 const barlow = Barlow({
@@ -16,23 +18,69 @@ const roboto = Roboto({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "SOGELOC — BTP, Logistique, Gestion",
-  description:
-    "SOGELOC, Société de Gestion, de Logistique et de Construction. Avec nous, réalisez vos projets ! BTP, Immobilier, prestations logistiques et gestion de biens et services en Côte d'Ivoire.",
-};
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sogeloc.com";
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await fetchSettings().catch(() => null);
+  const siteName = settings?.siteName || FALLBACK_SETTINGS.siteName;
+  const description = settings?.siteDescription || FALLBACK_SETTINGS.footerText;
+  const title = `${siteName} — BTP, Logistique, Gestion`;
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      siteName,
+      locale: "fr_CI",
+      type: "website",
+      ...(settings?.logo ? { images: [{ url: strapiMediaUrl(settings.logo.url) }] } : {}),
+    },
+    ...(settings?.favicon
+      ? { icons: { icon: strapiMediaUrl(settings.favicon.url) } }
+      : {}),
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await fetchSettings().catch(() => null);
+  const siteName = settings?.siteName || FALLBACK_SETTINGS.siteName;
+  const phone = settings?.phone || FALLBACK_SETTINGS.phone;
+  const email = settings?.email || FALLBACK_SETTINGS.email;
+  const address = settings?.address || FALLBACK_SETTINGS.address;
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: siteName,
+    url: SITE_URL,
+    description: settings?.siteDescription || FALLBACK_SETTINGS.footerText,
+    telephone: phone,
+    email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: address,
+      addressCountry: "CI",
+    },
+    ...(settings?.logo ? { logo: strapiMediaUrl(settings.logo.url) } : {}),
+  };
+
   return (
     <html
       lang="fr"
       className={`${barlow.variable} ${roboto.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <Navigation />
         <main className="flex-1">{children}</main>
         <Footer />
