@@ -27,31 +27,46 @@ export default async function Navigation() {
           )}
         </Link>
 
-        <nav className="hidden md:flex md:items-center md:gap-8">
-          {NAV_LINKS.map((link) => (
+        <nav className="hidden md:flex md:items-center">
+          {NAV_LINKS.map((link, i) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-heading text-sm font-semibold tracking-wide text-dark transition-colors hover:text-primary"
+              className={`px-4 font-heading text-sm font-semibold tracking-wide text-dark transition-colors hover:text-primary ${
+                i > 0 ? "border-l border-border" : "pl-0"
+              }`}
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden flex-col text-right font-heading text-sm font-semibold text-dark md:flex">
-          <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-primary">
-            {phone}
-          </a>
-          {phoneSecondary && (
-            <a href={`tel:${phoneSecondary.replace(/\s+/g, "")}`} className="hover:text-primary">
-              {phoneSecondary}
+        <div className="hidden items-center gap-2 md:flex">
+          <span className="text-primary">
+            <PhoneIcon />
+          </span>
+          <div className="flex flex-col text-right font-heading text-sm font-semibold text-dark">
+            <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-primary">
+              {phone}
             </a>
-          )}
+            {phoneSecondary && (
+              <a href={`tel:${phoneSecondary.replace(/\s+/g, "")}`} className="hover:text-primary">
+                {phoneSecondary}
+              </a>
+            )}
+          </div>
         </div>
 
         <MobileNavToggle />
       </div>
     </header>
+  );
+}
+
+function PhoneIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.4 21 3 13.6 3 4.5a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z" />
+    </svg>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import type { HeroSection } from "@/lib/types";
 import { strapiMediaUrl } from "@/lib/api";
@@ -22,27 +23,17 @@ export default function HeroSlider({ section }: { section: HeroSection }) {
   if (slides.length === 0) return null;
 
   const slide = slides[current];
+  const goTo = (index: number) => setCurrent((index + slides.length) % slides.length);
 
   return (
-    <section className="relative flex h-[70vh] min-h-[480px] items-center overflow-hidden">
-      {slides.map((s, i) => (
-        <div
-          key={s.id}
-          className="absolute inset-0 bg-dark bg-cover bg-center transition-opacity duration-1000"
-          style={{
-            backgroundImage: s.backgroundImage
-              ? `url(${strapiMediaUrl(s.backgroundImage.url)})`
-              : undefined,
-            opacity: i === current ? 1 : 0,
-          }}
-        />
-      ))}
-      <div className="absolute inset-0 bg-dark/50" />
-
-      <div className="relative mx-auto max-w-7xl px-6">
-        <div className="max-w-2xl text-white">
-          <h1 className="font-heading text-4xl font-bold md:text-5xl">{slide.title}</h1>
-          {slide.description && <p className="mt-6 text-lg leading-relaxed">{slide.description}</p>}
+    <section className="relative overflow-hidden bg-white">
+      <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 py-16 md:grid-cols-2 md:py-24">
+        {/* Colonne texte */}
+        <div>
+          <h1 className="font-heading text-4xl font-bold text-dark md:text-5xl">{slide.title}</h1>
+          {slide.description && (
+            <p className="mt-6 max-w-lg text-base leading-relaxed text-body">{slide.description}</p>
+          )}
           {slide.ctaLabel && slide.ctaLink && (
             <Link
               href={slide.ctaLink}
@@ -51,22 +42,84 @@ export default function HeroSlider({ section }: { section: HeroSection }) {
               {slide.ctaLabel}
             </Link>
           )}
+
+          {slides.length > 1 && (
+            <div className="mt-10 flex items-center gap-4">
+              <button
+                type="button"
+                aria-label="Slide précédente"
+                onClick={() => goTo(current - 1)}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-dark transition-colors hover:border-primary hover:text-primary"
+              >
+                <ChevronIcon direction="left" />
+              </button>
+              <button
+                type="button"
+                aria-label="Slide suivante"
+                onClick={() => goTo(current + 1)}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-dark transition-colors hover:border-primary hover:text-primary"
+              >
+                <ChevronIcon direction="right" />
+              </button>
+
+              <div className="flex items-center gap-2 pl-2">
+                {slides.map((s, i) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    aria-label={`Aller à la slide ${i + 1}`}
+                    onClick={() => goTo(i)}
+                    className={`h-2 rounded-full transition-all ${
+                      i === current ? "w-8 bg-primary" : "w-2 bg-border"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Colonne visuelle */}
+        <div className="relative aspect-4/3 md:aspect-square">
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(135deg, var(--color-primary-alt) 0%, var(--color-primary) 45%, var(--color-dark) 100%)",
+              clipPath: "polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            }}
+          />
+          {slide.backgroundImage && (
+            <div className="absolute inset-y-6 right-6 left-16 overflow-hidden shadow-xl md:left-24">
+              <Image
+                src={strapiMediaUrl(slide.backgroundImage.url)}
+                alt={slide.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          )}
         </div>
       </div>
-
-      {slides.length > 1 && (
-        <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 gap-2">
-          {slides.map((s, i) => (
-            <button
-              key={s.id}
-              type="button"
-              aria-label={`Aller à la slide ${i + 1}`}
-              onClick={() => setCurrent(i)}
-              className={`h-2 w-8 transition-colors ${i === current ? "bg-primary" : "bg-white/50"}`}
-            />
-          ))}
-        </div>
-      )}
     </section>
+  );
+}
+
+function ChevronIcon({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ transform: direction === "left" ? "scaleX(-1)" : undefined }}
+    >
+      <path d="M9 6l6 6-6 6" />
+    </svg>
   );
 }
