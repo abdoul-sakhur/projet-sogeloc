@@ -17,9 +17,9 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "ARTEMIS Construction & Travaux",
+  title: "SOGELOC — BTP, Logistique, Gestion",
   description:
-    "Bâtir l'avenir en toute quiétude. ARTEMIS Construction & Travaux, filiale du groupe KAYDAN, offre une gamme diverse de services en Bâtiments et Travaux Publics en Côte d'Ivoire.",
+    "SOGELOC, Société de Gestion, de Logistique et de Construction. Avec nous, réalisez vos projets ! BTP, Immobilier, prestations logistiques et gestion de biens et services en Côte d'Ivoire.",
 };
 
 export default function RootLayout({

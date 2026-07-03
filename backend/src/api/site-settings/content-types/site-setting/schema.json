@@ -31,6 +31,9 @@
     "phone": {
       "type": "string"
     },
+    "phoneSecondary": {
+      "type": "string"
+    },
     "email": {
       "type": "email"
     },

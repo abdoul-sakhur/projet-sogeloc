@@ -7,6 +7,7 @@ import MobileNavToggle from "./MobileNavToggle";
 export default async function Navigation() {
   const settings = await fetchSettings().catch(() => null);
   const phone = settings?.phone || FALLBACK_SETTINGS.phone;
+  const phoneSecondary = settings?.phoneSecondary || FALLBACK_SETTINGS.phoneSecondary;
   const siteName = settings?.siteName || FALLBACK_SETTINGS.siteName;
 
   return (
@@ -38,12 +39,16 @@ export default async function Navigation() {
           ))}
         </nav>
 
-        <a
-          href={`tel:${phone.replace(/\s+/g, "")}`}
-          className="hidden font-heading text-sm font-semibold text-dark md:block"
-        >
-          {phone}
-        </a>
+        <div className="hidden flex-col text-right font-heading text-sm font-semibold text-dark md:flex">
+          <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-primary">
+            {phone}
+          </a>
+          {phoneSecondary && (
+            <a href={`tel:${phoneSecondary.replace(/\s+/g, "")}`} className="hover:text-primary">
+              {phoneSecondary}
+            </a>
+          )}
+        </div>
 
         <MobileNavToggle />
       </div>

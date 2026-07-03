@@ -11,135 +11,166 @@ function slugify(value: string): string {
     .replace(/(^-|-$)/g, '');
 }
 
-/**
- * Seeds initial content extracted from the scraped ARTEMIS Construction & Travaux
- * site (see CONTENU_EXTRAIT.md at the repo root). Runs once: skipped as soon as a
- * Page entry already exists, so it never overwrites content edited in the admin.
- * Media fields are left empty — the source images were not present in the scrape
- * and must be uploaded manually (see CONTENU_EXTRAIT.md section 5/7 "Points d'attention").
- */
 const SEEDED_COLLECTIONS = [
   'api::hero-slide.hero-slide',
   'api::service.service',
   'api::project.project',
   'api::team-member.team-member',
-  'api::site-settings.site-setting',
 ] as const;
 
-async function clearPartialSeed(strapi: Core.Strapi) {
+async function clearExistingContent(strapi: Core.Strapi) {
   for (const uid of SEEDED_COLLECTIONS) {
     const entries = await strapi.documents(uid as any).findMany({});
     for (const entry of entries) {
-      await strapi.documents(uid as any).delete(entry.documentId);
+      await strapi.documents(uid as any).delete({ documentId: entry.documentId });
     }
+  }
+
+  const pages = await strapi.documents('api::page.page').findMany({});
+  for (const page of pages) {
+    await strapi.documents('api::page.page').delete({ documentId: page.documentId });
+  }
+
+  const settings = await strapi.documents('api::site-settings.site-setting').findFirst({});
+  if (settings) {
+    await strapi.documents('api::site-settings.site-setting').delete({ documentId: settings.documentId });
   }
 }
 
+/**
+ * Seeds SOGELOC's real content (provided by the client 2026-07-03, see
+ * sogeloc_company_info memory / conversation history). Replaces the earlier
+ * ARTEMIS Construction & Travaux placeholder content that was used only as a
+ * structural/design reference when this Next.js + Strapi stack was scaffolded.
+ * Idempotent: skipped once Site Settings already reports siteName "SOGELOC",
+ * so it never overwrites content edited afterwards in the admin.
+ */
 export default async function seed({ strapi }: { strapi: Core.Strapi }) {
-  const existingPages = await strapi.documents('api::page.page').count({});
-  if (existingPages > 0) return;
+  const currentSettings = await strapi.documents('api::site-settings.site-setting').findFirst({});
+  if (currentSettings?.siteName === 'SOGELOC') return;
 
-  // A previous run may have crashed mid-way (e.g. missing required field) and left
-  // orphaned hero-slides/services/projects/etc. behind even though no Page exists yet.
-  await clearPartialSeed(strapi);
-
-  strapi.log.info('[seed] Seeding initial ARTEMIS content...');
+  strapi.log.info('[seed] Replacing placeholder content with real SOGELOC content...');
+  await clearExistingContent(strapi);
 
   const heroSlides = await Promise.all(
     [
       {
-        title: 'Simplifier la complexité',
-        description:
-          "La réalisation des travaux est assurée par des techniciens de grandes expériences dans le domaine selectionnés avec soin dans le but de fournir un travail répondant aux attentes.",
+        title: 'Avec nous, réalisez vos projets !',
+        description: 'BTP - LOGISTIQUE - GESTION',
         order: 1,
-      },
-      {
-        title: "Bâtir l'avenir en toute quiétude!",
-        description:
-          "Fournir un service moderne et fiable par des solutions originales et efficaces en misant sur un esprit d'excellence et sur la responsabilisation de ses ressources.",
-        order: 2,
-      },
-      {
-        title: 'Livrer ce qui est planifié',
-        description:
-          "Grâce à une stratégie qui a fait ses preuves et un esprit d'excellence, ARTEMIS CONSTRUCTION & TRAVAUX est en mesure de rendre l'impossible ... possible.",
-        order: 3,
       },
     ].map((data) => strapi.documents('api::hero-slide.hero-slide').create({ data, status: 'published' }))
   );
 
   const serviceDefs = [
+    // BTP
     {
-      title: 'BATIMENT',
-      category: 'service' as const,
-      shortDescription: 'Constructions neuves, Réhabilitation de Bâtiments',
-      description:
-        "ARTEMIS assure la mise en oeuvre et la réalisation de batiment pour des entreprises et des particuliers, tout en respectant les normes requises afin de satisfaire sa clientèle.",
+      title: 'Construction de bâtiments',
+      category: 'btp' as const,
+      description: 'Réalisation de projets de construction de bâtiments pour entreprises et particuliers.',
       order: 1,
     },
     {
-      title: 'ROUTES',
-      category: 'service' as const,
-      shortDescription: 'Routes Bitumées, Routes en terre',
-      description:
-        "ARTEMIS contribue chaque année à améliorer la qualité du réseau et des infrastructures routières. De la voirie communale à l'autoroute, en passant par les pistes villageoises dans le domaine public ou privé.",
+      title: 'Construction de routes et ponts',
+      category: 'btp' as const,
+      description: 'Création, bitumage et réparation de routes et ponts.',
       order: 2,
     },
     {
-      title: 'VOIRIES ET RESEAUX DIVERS',
-      category: 'service' as const,
-      shortDescription: 'Raccordements et branchements de terrains viabilisés',
-      description:
-        "C'est le rassemblement des différents raccordements et branchements réalisés sur un terrain pour qu'il soit viabilisé. Cela désigne aussi la mise en place des diverses voies permettant à un territoire d'être desservi par les différents réseaux routiers, d'assainissement, d'eau, d'électricité, de télécommunication.",
+      title: 'Ameublement',
+      category: 'btp' as const,
+      description: "Fourniture et installation de mobilier dans le cadre de vos projets de construction.",
       order: 3,
     },
+    // Logistique
     {
-      title: 'GENIE CIVIL',
-      category: 'service' as const,
-      shortDescription: 'Ouvrages d\'art, industriels et commerciaux',
+      title: 'Transport et livraison',
+      category: 'logistique' as const,
       description:
-        "ARTEMIS génie civil réalise des chantiers complexes sur l'étendue du territoire : ouvrages d'art, industriels et commerciaux, travaux souterrains, assainissement, réhabilitation de bâtiments.",
+        'Transport et livraison de fournitures industrielles, produits miniers, produits dangereux, conteneurs et colis lourds.',
       order: 4,
     },
     {
-      title: 'CONSTRUCTION',
-      category: 'service' as const,
-      shortDescription: "Accompagnement à chaque étape de vos projets",
+      title: 'Commissionnaire agréé en douane',
+      category: 'logistique' as const,
       description:
-        "Maîtres d'ouvrage, constructeurs, investisseurs, propriétaires ou gestionnaires de parcs immobiliers, ARTEMIS vous accompagne à chaque étape de vos projets de construction puis tout au long du cycle de vie de vos bâtiments.",
+        "Documents d'importation et d'exportation de marchandises, dédouanement à l'import-export, dégroupage.",
       order: 5,
     },
     {
-      title: 'INFRASTRUCTURES DE TRANSPORTS',
-      category: 'service' as const,
-      shortDescription: 'Construction et entretien des infrastructures routières',
-      description:
-        "La construction et l'entretien des infrastructures routières constituent un domaine de prédilection de notre entreprise. Ainsi, nous réalisons des routes et assurons l'entretien quelque soit la nature.",
+      title: 'Dédouanement',
+      category: 'logistique' as const,
+      description: 'Courrier express, Supply Chain Solution, Cargo Express, expédition.',
       order: 6,
     },
     {
-      title: 'ETUDES',
-      category: 'intervention' as const,
-      shortDescription: "Études technico-économiques, DAO",
-      description:
-        "ARTEMIS CONSTRUCTION & TRAVAUX réalise diverses études en Génie civil notamment des études technico-économiques de faisabilité de projet de Génie civil, les études techniques d'exécution, établissement des DAO.",
+      title: 'Approvisionnement',
+      category: 'logistique' as const,
+      description: 'Approvisionnement en matières premières et fournitures.',
       order: 7,
     },
     {
-      title: 'REALISATION DES TRAVAUX',
-      category: 'intervention' as const,
-      shortDescription: 'Bâtiment, travaux publics, VRD',
-      description:
-        "ARTEMIS CONSTRUCTION & TRAVAUX assure la réalisation des travaux de bâtiment, travaux publics et Voirie et réseaux divers. Nous disposons d'une ressource humaine jeune et dynamique dévoué à l'accomplissement de ces travaux.",
+      title: 'Gestion de stock',
+      category: 'logistique' as const,
+      description: 'Suivi et gestion de vos stocks.',
       order: 8,
     },
+    // Gestion
     {
-      title: 'ENCADREMENT – OPC',
-      category: 'intervention' as const,
-      shortDescription: 'Ordonnancement, Pilotage et Coordination',
-      description:
-        "ARTEMIS CONSTRUCTION & TRAVAUX assiste ses clients dans la mise en œuvre de leurs projets. ARTEMIS CONSTRUCTION & TRAVAUX assure également l'Ordonnancement, le Pilotage et la Coordination dans le cadre de la gestion de projets.",
+      title: 'Gestion de biens immobiliers',
+      category: 'gestion' as const,
+      description: 'Gestion complète de biens immobiliers pour le compte de nos clients.',
       order: 9,
+    },
+    {
+      title: 'Promotion immobilière',
+      category: 'gestion' as const,
+      description: "Accompagnement dans la conception et la commercialisation de programmes immobiliers.",
+      order: 10,
+    },
+    {
+      title: 'Gestion de projets',
+      category: 'gestion' as const,
+      description: 'Pilotage et coordination de vos projets, du démarrage à la livraison.',
+      order: 11,
+    },
+    {
+      title: 'Gestion des ressources humaines et matérielles',
+      category: 'gestion' as const,
+      description: 'Gestion des ressources humaines et matérielles nécessaires à vos activités.',
+      order: 12,
+    },
+    {
+      title: 'Gestion administrative et financière',
+      category: 'gestion' as const,
+      description: 'Gestion administrative et financière de vos structures et projets.',
+      order: 13,
+    },
+    // Divers
+    {
+      title: "Création d'entreprise",
+      category: 'divers' as const,
+      description: "Accompagnement complet pour la formalisation et le lancement d'activités.",
+      order: 14,
+    },
+    {
+      title: 'Événementiel',
+      category: 'divers' as const,
+      description: "Organisation et gestion d'événements professionnels ou privés.",
+      order: 15,
+    },
+    {
+      title: 'Service de nettoyage',
+      category: 'divers' as const,
+      description: 'Entretien de locaux professionnels et résidentiels.',
+      order: 16,
+    },
+    {
+      title: 'Agence de voyages',
+      category: 'divers' as const,
+      description:
+        "Billetterie et conseil, service de réservation hôtel/voiture, organisation de séminaires et congrès, assurance voyage.",
+      order: 17,
     },
   ];
 
@@ -152,134 +183,50 @@ export default async function seed({ strapi }: { strapi: Core.Strapi }) {
     )
   );
 
-  const projectDefs = [
-    {
-      title: 'Symphonia',
-      categories: ['Construction', 'Immobilier'],
-      description:
-        'Travaux de construction de 84 Villas Duplex sur 300 et 600 m2 et 14 immeubles R+1 et 1,5km de voirie pour le compte de KAYDAN REAL ESTATE',
-      client: 'KAYDAN REAL ESTATE',
-      location: 'Cocody Faya',
-      servicesText: 'Réalisation des travaux',
-      order: 1,
-    },
-    {
-      title: 'Redstone',
-      categories: ['Construction', 'Immobilier'],
-      description:
-        "Travaux de construction d'un immeuble R+3 à usage d'habitation à Cocody Riviera – GENIE 2000",
-      client: 'Particulier',
-      location: 'Cocody Riviera',
-      servicesText: 'Etude et réalisation des travaux',
-      order: 2,
-    },
-    {
-      title: 'Callisto-etoile',
-      categories: ['Construction', 'Immobilier'],
-      description: 'Travaux de construction de 74 Villas Duplex',
-      client: 'KAYDAN REAL ESTATE',
-      location: 'Cocody Faya',
-      servicesText: 'Réalisation des travaux',
-      order: 3,
-    },
-    {
-      title: 'Symphonium',
-      categories: ['Construction'],
-      description:
-        'Travaux de construction 5 immeubles R+2 dont 16 Magasins et 20 Appartements de 3 pièces.',
-      client: 'KAYDAN REAL ESTATE',
-      servicesText: 'Réalisation des travaux',
-      order: 4,
-    },
-  ];
-
-  const projects = await Promise.all(
-    projectDefs.map((data) =>
-      strapi.documents('api::project.project').create({
-        data: { ...data, slug: slugify(data.title) },
-        status: 'published',
-      })
-    )
-  );
-
-  const teamDefs = [
-    { firstName: 'Tiémoko', lastName: 'DIOMANDE', position: 'Directeur Général', order: 1 },
-    { firstName: 'Eric', lastName: 'OBODJI', position: 'Directeur des Opérations', order: 2 },
-    { firstName: 'Abdel Aziz', lastName: 'BAMBA', position: 'Directeur Technique', order: 3 },
-    { firstName: 'Aboubacar', lastName: 'DIALLO', position: 'Responsable Bureau Etudes', order: 4 },
-  ];
-
-  const teamMembers = await Promise.all(
-    teamDefs.map((data) => strapi.documents('api::team-member.team-member').create({ data, status: 'published' }))
-  );
+  const byCategory = (category: (typeof serviceDefs)[number]['category']) =>
+    services.filter((_, i) => serviceDefs[i].category === category).map((s) => s.id);
 
   await strapi.documents('api::site-settings.site-setting').create({
     data: {
-      siteName: 'ARTEMIS',
+      siteName: 'SOGELOC',
       siteDescription:
-        "ARTEMIS CONSTRUCTION & TRAVAUX, filiale du groupe KAYDAN, offre une gamme diverse de services en Bâtiments et Travaux Publics en Côte d'Ivoire.",
-      phone: '+225 27 22 46 90 37',
-      email: 'infos@artemisconstruction-ci.com',
-      address: '08 Bp 2553 ABJ 08, Abidjan, Cocody - Riviéra Jardin',
-      hours: 'Lun - Ven: 08h00 – 18h30',
-      mapLat: 5.3489182,
-      mapLng: -3.9798831,
-      footerText: 'Filiale du GROUPE KAYDAN',
+        "Société de Gestion, de Logistique et de Construction — entreprise privée de droit ivoirien intervenant en Bâtiments et Travaux Publics, Immobilier, Prestations logistiques et Gestion de biens et services.",
+      phone: '+225 07 89 469 362',
+      phoneSecondary: '+225 05 64 231 818',
+      email: 'contact@sogeloc.com',
+      address: '27 Bp 1067 ABJ 27, Cocody Angré, Angré Djerogobite 1 (près du lycée univers roi des rois)',
+      // Coordonnées approximatives du quartier Cocody Angré, Abidjan — à affiner
+      // avec la localisation précise du siège (voir memory sogeloc_company_info).
+      mapLat: 5.3897,
+      mapLng: -3.9639,
+      footerText: 'Avec nous, réalisez vos projets !',
     },
   });
-
-  const homeCounters = [
-    { value: '3', label: 'Projets de bâtiment réalisés' },
-    { value: '1', label: 'Projets de voiries et réseaux divers' },
-    { value: '0', label: 'Projet de routes' },
-    { value: '1', label: "Années d'expérience dans le domaine de la construction" },
-  ];
-
-  const aproposCounters = [
-    { value: '1', label: 'Projets de bâtiment réalisés' },
-    { value: '0', label: 'Projets de voiries et réseaux divers' },
-    { value: '0', label: 'Projet de routes' },
-    { value: '1', label: "Années d'expérience dans le domaine de la construction" },
-  ];
 
   await strapi.documents('api::page.page').create({
     data: {
       title: 'Accueil',
       slug: 'home',
       seo: {
-        metaTitle: 'ARTEMIS Construction & Travaux',
+        metaTitle: 'SOGELOC — BTP, Logistique, Gestion',
         metaDescription:
-          "Bâtir l'avenir en toute quiétude. ARTEMIS Construction & Travaux, filiale du groupe KAYDAN.",
+          "SOGELOC, Société de Gestion, de Logistique et de Construction. Avec nous, réalisez vos projets !",
       },
       sections: [
         { __component: 'sections.hero', slides: heroSlides.map((s) => s.id) },
         {
           __component: 'sections.about',
-          subtitle: 'A propos',
-          title: "BATIR L'AVENIR EN TOUTE QUIETUDE…",
+          subtitle: 'Présentation',
+          title: 'Qui sommes-nous ?',
           content:
-            'Opérationnelle depuis six (06) ans, CONSTRUCTION & TRAVAUX, filiale du groupe KAYDAN, offre une gamme diverse de services en Bâtiments et Travaux Publics.\n\nDans le domaine de la construction en Côte d\'ivoire, notre entreprise fait partie des plus importantes sociétés grâce d\'une part à la qualité de ses services et ses réalisations et d\'autre part à ses partenariats stratégiques aussi bien au plan local qu\'à l\'international.',
-          videoUrl: 'https://www.youtube.com/watch?v=aFyvYIJjvUQ',
-          videoLabel: 'En vidéo',
+            "La Société de Gestion, de Logistique et de Construction (Sogeloc) est une entreprise privée de droit ivoirien, conçue pour réaliser des services moyens et d'envergure en matière de Bâtiments et Travaux Publics (BTP), Immobilier, Prestations logistiques, Gestion de biens et services, Fournitures en matériels informatiques, bureautiques et industriels, et divers.\n\nNotre engagement : la satisfaction de nos clients sous le prisme de l'efficacité, la célérité et la performance. Fort de notre savoir-faire et de notre expertise, la qualité du travail bien fait est au centre de nos valeurs.",
           cta: { label: 'Tout savoir', link: '/apropos', style: 'secondary' },
         },
         {
           __component: 'sections.services-grid',
-          subtitle: 'Services',
-          title: 'Fournir des services modernes et fiables…',
+          subtitle: 'Nos activités',
+          title: 'Nos domaines d’intervention',
           services: services.map((s) => s.id),
-        },
-        {
-          __component: 'sections.projects-grid',
-          subtitle: 'Projets',
-          title: "Notre travail est la résultante d'une cohesion et d'une expertise efficace.",
-          projects: projects.map((p) => p.id),
-        },
-        {
-          __component: 'sections.stats',
-          subtitle: 'Artemis en chiffre.',
-          title: "Construire les personnes et les projets qui améliorent l'infrastructure Africaine.",
-          counters: homeCounters,
         },
         {
           __component: 'sections.contact',
@@ -295,93 +242,55 @@ export default async function seed({ strapi }: { strapi: Core.Strapi }) {
     data: {
       title: 'À propos',
       slug: 'apropos',
-      seo: { metaTitle: 'À propos | ARTEMIS Construction & Travaux' },
+      seo: { metaTitle: 'À propos | SOGELOC' },
       sections: [
         {
           __component: 'sections.page-title',
-          subtitle: 'A propos de ARTEMIS',
-          title: "Construire les personnes et les projets qui améliorent l'infrastructure africaine.",
+          subtitle: 'SOGELOC',
+          title: 'Avec nous, réalisez vos projets !',
         },
         {
           __component: 'sections.about',
-          title: "BATIR L'AVENIR EN TOUTE QUIETUDE…",
+          subtitle: 'Présentation',
+          title: 'BTP - Logistique - Gestion',
           content:
-            "Opérationnelle depuis six (06) ans, ARTEMIS CONSTRUCTION & TRAVAUX, filiale du groupe KAYDAN, offre une gamme diverse de services en Bâtiments et Travaux Publics.\n\nDans le domaine de la construction en Côte d'ivoire, notre entreprise fait partie des plus importantes sociétés grâce d'une part à la qualité de ses services et ses réalisations et d'autre part à ses partenariats stratégiques aussi bien au plan local qu'à l'international.\n\nNotre mission est de fournir à nos clients des services modernes et fiables en leur proposant des solutions originales et efficaces, en misant sur un esprit d'Excellence et sur la responsabilisation de nos ressources.\n\nNotre engagement : Simplifier la complexité et livrer ce qui est planifié.",
-          videoUrl: 'https://www.youtube.com/watch?v=aFyvYIJjvUQ',
-          videoLabel: 'Regarder notre vidéo',
-        },
-        {
-          __component: 'sections.stats',
-          counters: aproposCounters,
+            "La Société de Gestion, de Logistique et de Construction (Sogeloc) est une entreprise privée de droit ivoirien, conçue pour réaliser des services moyens et d'envergure en matière de :\n\nBâtiments et Travaux Publics (BTP), Immobilier, Prestations logistiques, Gestion de biens et services, Fournitures en matériels informatiques, bureautiques et industriels, et divers.\n\nNotre engagement est la satisfaction de nos clients sous le prisme de l'efficacité, la célérité et la performance. Fort de notre savoir-faire et de notre expertise, la qualité du travail bien fait est au centre de nos valeurs. Notre entreprise, sous l'effet du modernisme, n'échappe pas à la transition numérique, à l'ère de l'intelligence artificielle.",
         },
       ],
     },
     status: 'published',
   });
-
-  const mainServices = services.filter((_, i) => serviceDefs[i].category === 'service');
-  const interventionServices = services.filter((_, i) => serviceDefs[i].category === 'intervention');
 
   await strapi.documents('api::page.page').create({
     data: {
       title: 'Nos services',
       slug: 'services',
-      seo: { metaTitle: 'Nos services | ARTEMIS Construction & Travaux' },
+      seo: { metaTitle: 'Nos services | SOGELOC' },
       sections: [
         {
           __component: 'sections.page-title',
           subtitle: 'Nos services',
-          title: 'Fournir une qualité de service moderne et fiable.',
+          title: 'Des services complets pour tous vos projets',
         },
         {
           __component: 'sections.services-grid',
-          title: 'SERVICES',
-          services: mainServices.map((s) => s.id),
+          title: 'BÂTIMENTS - TRAVAUX PUBLICS',
+          services: byCategory('btp'),
         },
         {
           __component: 'sections.services-grid',
-          title: "NATURE D'INTERVENTION",
-          services: interventionServices.map((s) => s.id),
-        },
-      ],
-    },
-    status: 'published',
-  });
-
-  await strapi.documents('api::page.page').create({
-    data: {
-      title: 'Nos projets',
-      slug: 'projets',
-      seo: { metaTitle: 'Nos projets | ARTEMIS Construction & Travaux' },
-      sections: [
-        {
-          __component: 'sections.page-title',
-          subtitle: 'Nos projets',
-          title: "Notre travail est la résultante d'une cohesion et d'une expertise efficace.",
+          title: 'LOGISTIQUE',
+          services: byCategory('logistique'),
         },
         {
-          __component: 'sections.projects-grid',
-          projects: projects.map((p) => p.id),
-        },
-      ],
-    },
-    status: 'published',
-  });
-
-  await strapi.documents('api::page.page').create({
-    data: {
-      title: 'Notre équipe',
-      slug: 'equipe',
-      seo: { metaTitle: 'Notre équipe | ARTEMIS Construction & Travaux' },
-      sections: [
-        {
-          __component: 'sections.page-title',
-          subtitle: 'Notre équipe',
-          title: 'Des Experts Travaillant En Étroite Collaboration.',
+          __component: 'sections.services-grid',
+          title: 'GESTION',
+          services: byCategory('gestion'),
         },
         {
-          __component: 'sections.team-grid',
-          members: teamMembers.map((m) => m.id),
+          __component: 'sections.services-grid',
+          title: 'DIVERS',
+          services: byCategory('divers'),
         },
       ],
     },
@@ -392,13 +301,18 @@ export default async function seed({ strapi }: { strapi: Core.Strapi }) {
     data: {
       title: 'Contact',
       slug: 'contact',
-      seo: { metaTitle: 'Contact | ARTEMIS Construction & Travaux' },
+      seo: { metaTitle: 'Contact | SOGELOC' },
       sections: [
         {
+          __component: 'sections.page-title',
+          subtitle: 'Contact',
+          title: 'Parlons de votre projet',
+        },
+        {
           __component: 'sections.contact',
-          title: 'Nous Contactez',
+          title: 'Nous Contacter',
           description:
-            'Le contrôle complet des produits nous permet de garantir à nos clients les meilleurs prix et services de qualité. Faites nous confiance.',
+            "Une question, un projet ? Contactez-nous, notre équipe vous répond dans les meilleurs délais.",
           showMap: true,
         },
       ],
@@ -406,5 +320,5 @@ export default async function seed({ strapi }: { strapi: Core.Strapi }) {
     status: 'published',
   });
 
-  strapi.log.info('[seed] Done seeding initial ARTEMIS content.');
+  strapi.log.info('[seed] Done seeding SOGELOC content.');
 }

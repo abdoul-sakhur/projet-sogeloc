@@ -49,7 +49,7 @@ export interface Service {
   documentId: string;
   title: string;
   slug: string;
-  category: "service" | "intervention";
+  category: "btp" | "logistique" | "gestion" | "divers";
   shortDescription?: string;
   description?: string;
   image?: Media;
@@ -176,6 +176,7 @@ export interface SiteSettings {
   logo?: Media;
   favicon?: Media;
   phone?: string;
+  phoneSecondary?: string;
   email?: string;
   address?: string;
   hours?: string;

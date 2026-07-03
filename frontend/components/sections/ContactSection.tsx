@@ -6,11 +6,12 @@ import ContactForm from "./ContactForm";
 export default async function ContactSection({ section }: { section: ContactSectionType }) {
   const settings = await fetchSettings().catch(() => null);
   const phone = settings?.phone || FALLBACK_SETTINGS.phone;
+  const phoneSecondary = settings?.phoneSecondary || FALLBACK_SETTINGS.phoneSecondary;
   const email = settings?.email || FALLBACK_SETTINGS.email;
   const address = settings?.address || FALLBACK_SETTINGS.address;
   const hours = settings?.hours || FALLBACK_SETTINGS.hours;
-  const lat = settings?.mapLat ?? 5.3489182;
-  const lng = settings?.mapLng ?? -3.9798831;
+  const lat = settings?.mapLat ?? 5.3897;
+  const lng = settings?.mapLng ?? -3.9639;
 
   return (
     <section className="px-6 py-20">
@@ -42,17 +43,27 @@ export default async function ContactSection({ section }: { section: ContactSect
                 <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-primary">
                   {phone}
                 </a>
+                {phoneSecondary && (
+                  <>
+                    {" / "}
+                    <a href={`tel:${phoneSecondary.replace(/\s+/g, "")}`} className="hover:text-primary">
+                      {phoneSecondary}
+                    </a>
+                  </>
+                )}
               </li>
-              <li>
-                <span className="font-heading font-semibold text-dark">Horaires : </span>
-                {hours}
-              </li>
+              {hours && (
+                <li>
+                  <span className="font-heading font-semibold text-dark">Horaires : </span>
+                  {hours}
+                </li>
+              )}
             </ul>
 
             {section.showMap && (
               <div className="mt-8 aspect-4/3 w-full overflow-hidden">
                 <iframe
-                  title="Localisation ARTEMIS"
+                  title="Localisation SOGELOC"
                   className="h-full w-full border-0"
                   loading="lazy"
                   src={`https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.01}%2C${lat - 0.01}%2C${lng + 0.01}%2C${lat + 0.01}&marker=${lat}%2C${lng}&layer=mapnik`}

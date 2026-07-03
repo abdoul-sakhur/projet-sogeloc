@@ -6,7 +6,7 @@ import PageBuilder from "@/components/PageBuilder";
 export async function generateMetadata(): Promise<Metadata> {
   const page = await fetchPage("equipe").catch(() => null);
   return {
-    title: page?.seo?.metaTitle || page?.title || "Notre équipe | ARTEMIS Construction & Travaux",
+    title: page?.seo?.metaTitle || page?.title || "Notre équipe | SOGELOC",
     description: page?.seo?.metaDescription,
     keywords: page?.seo?.metaKeywords,
   };

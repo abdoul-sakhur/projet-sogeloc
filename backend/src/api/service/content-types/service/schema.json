@@ -5,7 +5,7 @@
     "singularName": "service",
     "pluralName": "services",
     "displayName": "Service",
-    "description": "Services et natures d'intervention proposés par l'entreprise"
+    "description": "Services proposés par l'entreprise, regroupés par domaine d'activité"
   },
   "options": {
     "draftAndPublish": true
@@ -23,8 +23,8 @@
     },
     "category": {
       "type": "enumeration",
-      "enum": ["service", "intervention"],
-      "default": "service",
+      "enum": ["btp", "logistique", "gestion", "divers"],
+      "default": "btp",
       "required": true
     },
     "shortDescription": {

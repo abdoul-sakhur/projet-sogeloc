@@ -12,6 +12,7 @@ const SOCIAL_ICONS = [
 export default async function Footer() {
   const settings = await fetchSettings().catch(() => null);
   const phone = settings?.phone || FALLBACK_SETTINGS.phone;
+  const phoneSecondary = settings?.phoneSecondary || FALLBACK_SETTINGS.phoneSecondary;
   const email = settings?.email || FALLBACK_SETTINGS.email;
   const address = settings?.address || FALLBACK_SETTINGS.address;
   const hours = settings?.hours || FALLBACK_SETTINGS.hours;
@@ -41,12 +42,19 @@ export default async function Footer() {
                 {phone}
               </a>
             </li>
+            {phoneSecondary && (
+              <li>
+                <a href={`tel:${phoneSecondary.replace(/\s+/g, "")}`} className="hover:text-primary">
+                  {phoneSecondary}
+                </a>
+              </li>
+            )}
             <li>
               <a href={`mailto:${email}`} className="hover:text-primary">
                 {email}
               </a>
             </li>
-            <li>{hours}</li>
+            {hours && <li>{hours}</li>}
           </ul>
         </div>
 

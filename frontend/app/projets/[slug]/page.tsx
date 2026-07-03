@@ -12,7 +12,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = await fetchProjectBySlug(slug).catch(() => null);
   return {
-    title: project ? `${project.title} | ARTEMIS Construction & Travaux` : "Projet",
+    title: project ? `${project.title} | SOGELOC` : "Projet",
   };
 }
 

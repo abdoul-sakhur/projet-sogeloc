@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "*.artemisconstruction-ci.com",
+        hostname: "*.sogeloc.com",
         pathname: "/uploads/**",
       },
     ],

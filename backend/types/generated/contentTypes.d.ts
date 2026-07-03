@@ -593,7 +593,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
 export interface ApiServiceService extends Struct.CollectionTypeSchema {
   collectionName: 'services';
   info: {
-    description: "Services et natures d'intervention propos\u00E9s par l'entreprise";
+    description: "Services propos\u00E9s par l'entreprise, regroup\u00E9s par domaine d'activit\u00E9";
     displayName: 'Service';
     pluralName: 'services';
     singularName: 'service';
@@ -602,9 +602,11 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    category: Schema.Attribute.Enumeration<['service', 'intervention']> &
+    category: Schema.Attribute.Enumeration<
+      ['btp', 'logistique', 'gestion', 'divers']
+    > &
       Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'service'>;
+      Schema.Attribute.DefaultTo<'btp'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -658,6 +660,7 @@ export interface ApiSiteSettingsSiteSetting extends Struct.SingleTypeSchema {
     mapLat: Schema.Attribute.Decimal;
     mapLng: Schema.Attribute.Decimal;
     phone: Schema.Attribute.String;
+    phoneSecondary: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     siteDescription: Schema.Attribute.Text;
     siteName: Schema.Attribute.String;
