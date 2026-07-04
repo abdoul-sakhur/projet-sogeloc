@@ -15,14 +15,14 @@ export default async function ContactSection({ section }: { section: ContactSect
 
   return (
     <section className="px-6 py-20">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-[1140px]">
         {section.title && (
-          <h2 className="text-center font-heading text-3xl font-bold text-dark md:text-4xl">
+          <h2 className="font-heading text-[23px] font-bold text-dark md:text-[34px]">
             {section.title}
           </h2>
         )}
         {section.description && (
-          <p className="mx-auto mt-4 max-w-2xl text-center text-body">{section.description}</p>
+          <p className="mt-4 max-w-2xl text-[16px] leading-[27px] text-body">{section.description}</p>
         )}
 
         <div className="mt-12 grid gap-10 md:grid-cols-2">

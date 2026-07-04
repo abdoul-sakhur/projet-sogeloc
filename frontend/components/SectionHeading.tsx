@@ -3,24 +3,30 @@ export default function SectionHeading({
   title,
   light = false,
   align = "left",
+  size = "default",
 }: {
   subtitle?: string;
   title?: string;
   light?: boolean;
   align?: "left" | "center";
+  size?: "default" | "large";
 }) {
   if (!subtitle && !title) return null;
 
   return (
     <div className={align === "center" ? "text-center" : "text-left"}>
       {subtitle && (
-        <p className="font-heading text-sm font-bold uppercase tracking-wide text-primary">
+        <span
+          className={`block font-sans text-[15px] font-bold ${light ? "text-white/95" : "text-primary"}`}
+        >
           {subtitle}
-        </p>
+        </span>
       )}
       {title && (
         <h2
-          className={`mt-2 font-heading text-3xl font-bold md:text-4xl ${light ? "text-white" : "text-dark"}`}
+          className={`mt-[10px] font-heading font-bold ${
+            size === "large" ? "text-[28px] md:text-[40px]" : "text-[23px] md:text-[34px]"
+          } ${light ? "text-white" : "text-dark"}`}
         >
           {title}
         </h2>

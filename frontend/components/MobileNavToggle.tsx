@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { NAV_LINKS } from "@/lib/constants";
 
-export default function MobileNavToggle() {
+export default function MobileNavToggle({ light = false }: { light?: boolean }) {
   const [open, setOpen] = useState(false);
+  const barColor = open || !light ? "bg-dark" : "bg-white";
 
   return (
     <div className="md:hidden">
@@ -17,11 +18,11 @@ export default function MobileNavToggle() {
         className="flex h-10 w-10 flex-col items-center justify-center gap-1.5"
       >
         <span
-          className={`h-0.5 w-6 bg-dark transition-transform ${open ? "translate-y-2 rotate-45" : ""}`}
+          className={`h-0.5 w-6 transition-transform ${barColor} ${open ? "translate-y-2 rotate-45" : ""}`}
         />
-        <span className={`h-0.5 w-6 bg-dark transition-opacity ${open ? "opacity-0" : ""}`} />
+        <span className={`h-0.5 w-6 transition-opacity ${barColor} ${open ? "opacity-0" : ""}`} />
         <span
-          className={`h-0.5 w-6 bg-dark transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`}
+          className={`h-0.5 w-6 transition-transform ${barColor} ${open ? "-translate-y-2 -rotate-45" : ""}`}
         />
       </button>
 

@@ -24,75 +24,73 @@ export default async function Footer() {
   })).filter((icon) => icon.href);
 
   return (
-    <footer className="bg-dark text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-3">
-        <div>
-          <h3 className="font-heading text-2xl font-bold">{siteName}</h3>
-          <p className="mt-3 text-sm text-body">{footerText}</p>
-        </div>
+    <footer>
+      <div className="border-t border-border bg-white px-6 pt-[50px] pb-[40px] md:pt-[70px]">
+        <div className="mx-auto grid max-w-[1140px] gap-10 md:grid-cols-3">
+          <div>
+            <h3 className="font-heading text-2xl font-bold text-dark">{siteName}</h3>
+            <p className="mt-3 text-[14px] text-body">{footerText}</p>
 
-        <div>
-          <h4 className="font-heading text-sm font-bold uppercase tracking-wide text-primary">
-            Contact
-          </h4>
-          <ul className="mt-4 space-y-2 text-sm text-body">
-            <li>{address}</li>
-            <li>
-              <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-primary">
-                {phone}
-              </a>
-            </li>
-            {phoneSecondary && (
+            {socialLinks.length > 0 && (
+              <ul className="mt-6 flex gap-[9px]">
+                {socialLinks.map((icon) => (
+                  <li key={icon.key}>
+                    <a
+                      href={icon.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={icon.label}
+                      className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-dark text-[13px] font-bold text-white transition-colors hover:bg-primary"
+                    >
+                      {icon.label.charAt(0)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div>
+            <h4 className="font-heading text-[17px] font-bold text-dark">Contact</h4>
+            <ul className="mt-[20px] space-y-[11px] text-[14px] text-body">
+              <li>{address}</li>
               <li>
-                <a href={`tel:${phoneSecondary.replace(/\s+/g, "")}`} className="hover:text-primary">
-                  {phoneSecondary}
+                <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-primary">
+                  {phone}
                 </a>
               </li>
-            )}
-            <li>
-              <a href={`mailto:${email}`} className="hover:text-primary">
-                {email}
-              </a>
-            </li>
-            {hours && <li>{hours}</li>}
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="font-heading text-sm font-bold uppercase tracking-wide text-primary">
-            Navigation
-          </h4>
-          <ul className="mt-4 space-y-2 text-sm text-body">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="hover:text-primary">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          {socialLinks.length > 0 && (
-            <ul className="mt-6 flex gap-4">
-              {socialLinks.map((icon) => (
-                <li key={icon.key}>
-                  <a
-                    href={icon.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={icon.label}
-                    className="text-body hover:text-primary"
-                  >
-                    {icon.label}
+              {phoneSecondary && (
+                <li>
+                  <a href={`tel:${phoneSecondary.replace(/\s+/g, "")}`} className="hover:text-primary">
+                    {phoneSecondary}
                   </a>
+                </li>
+              )}
+              <li>
+                <a href={`mailto:${email}`} className="hover:text-primary">
+                  {email}
+                </a>
+              </li>
+              {hours && <li>{hours}</li>}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-heading text-[17px] font-bold text-dark">Navigation</h4>
+            <ul className="mt-[20px] space-y-[11px] text-[14px] text-body">
+              {NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="hover:text-primary">
+                    {link.label}
+                  </Link>
                 </li>
               ))}
             </ul>
-          )}
+          </div>
         </div>
       </div>
 
-      <div className="border-t border-white/10 px-6 py-6 text-center text-xs text-body">
+      <div className="bg-[#242424] px-6 py-[20px] text-center text-xs text-body">
         © {new Date().getFullYear()} {siteName}. Tous droits réservés.
       </div>
     </footer>
