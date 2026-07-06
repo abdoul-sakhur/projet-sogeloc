@@ -2,6 +2,7 @@ import type { Section } from "@/lib/types";
 import PageTitleBanner from "./sections/PageTitleBanner";
 import HeroSlider from "./sections/HeroSlider";
 import AboutSection from "./sections/AboutSection";
+import DomainsGrid from "./sections/DomainsGrid";
 import ServicesGrid from "./sections/ServicesGrid";
 import ProjectsGrid from "./sections/ProjectsGrid";
 import TeamGrid from "./sections/TeamGrid";
@@ -24,6 +25,8 @@ export default function PageBuilder({ sections }: { sections: Section[] }) {
             return <HeroSlider key={key} section={section} />;
           case "sections.about":
             return <AboutSection key={key} section={section} />;
+          case "sections.domains-grid":
+            return <DomainsGrid key={key} section={section} />;
           case "sections.services-grid":
             return <ServicesGrid key={key} section={section} />;
           case "sections.projects-grid":

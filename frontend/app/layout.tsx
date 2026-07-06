@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Barlow, Roboto } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { fetchSettings, strapiMediaUrl } from "@/lib/api";
 import { FALLBACK_SETTINGS } from "@/lib/constants";
 import "./globals.css";
@@ -84,6 +85,7 @@ export default async function RootLayout({
         <Navigation />
         <main className="flex-1">{children}</main>
         <Footer />
+        <WhatsAppButton />
       </body>
     </html>
   );

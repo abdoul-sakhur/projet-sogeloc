@@ -32,6 +32,7 @@
         "sections.page-title",
         "sections.hero",
         "sections.about",
+        "sections.domains-grid",
         "sections.services-grid",
         "sections.projects-grid",
         "sections.team-grid",

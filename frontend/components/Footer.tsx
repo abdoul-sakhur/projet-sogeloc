@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { fetchSettings } from "@/lib/api";
+import { fetchSettings, strapiMediaUrl } from "@/lib/api";
 import { FALLBACK_SETTINGS, NAV_LINKS } from "@/lib/constants";
 
 const SOCIAL_ICONS = [
@@ -28,7 +29,17 @@ export default async function Footer() {
       <div className="border-t border-border bg-white px-6 pt-[50px] pb-[40px] md:pt-[70px]">
         <div className="mx-auto grid max-w-[1140px] gap-10 md:grid-cols-3">
           <div>
-            <h3 className="font-heading text-2xl font-bold text-dark">{siteName}</h3>
+            {settings?.logo ? (
+              <Image
+                src={strapiMediaUrl(settings.logo.url)}
+                alt={siteName}
+                width={140}
+                height={48}
+                className="h-10 w-auto"
+              />
+            ) : (
+              <h3 className="font-heading text-2xl font-bold text-dark">{siteName}</h3>
+            )}
             <p className="mt-3 text-[14px] text-body">{footerText}</p>
 
             {socialLinks.length > 0 && (
@@ -90,7 +101,7 @@ export default async function Footer() {
         </div>
       </div>
 
-      <div className="bg-[#242424] px-6 py-[20px] text-center text-xs text-body">
+      <div className="bg-dark px-6 py-[20px] text-center text-xs text-body">
         © {new Date().getFullYear()} {siteName}. Tous droits réservés.
       </div>
     </footer>

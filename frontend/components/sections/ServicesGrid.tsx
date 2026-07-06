@@ -34,7 +34,7 @@ export default function ServicesGrid({ section }: { section: ServicesGridSection
           {services.map((service) => (
             <div
               key={service.id}
-              className="group relative min-h-[320px] overflow-hidden rounded-[4px] bg-white p-5 shadow-[0px_5px_83px_0px_rgba(40,40,40,0.04)] transition-transform duration-300 hover:-translate-y-[5px] md:min-h-[380px] md:p-[30px]"
+              className="group relative overflow-hidden rounded-[4px] bg-white p-5 shadow-[0px_5px_83px_0px_rgba(40,40,40,0.04)] transition-transform duration-300 hover:-translate-y-[5px] md:p-[30px]"
             >
               {service.image && (
                 <div className="relative mb-[10px] aspect-4/3 overflow-hidden rounded-[5px] border border-primary">
@@ -52,9 +52,9 @@ export default function ServicesGrid({ section }: { section: ServicesGridSection
                   {service.title}
                   <span className="absolute bottom-0 left-0 h-[2px] w-full bg-border transition-colors group-hover:bg-white" />
                 </h3>
-                {service.shortDescription && (
+                {(service.shortDescription || service.description) && (
                   <p className="text-[14px] leading-[24px] text-body transition-colors group-hover:text-white">
-                    {service.shortDescription}
+                    {service.shortDescription || service.description}
                   </p>
                 )}
               </div>

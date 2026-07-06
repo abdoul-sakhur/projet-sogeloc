@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_sections_domains_grids",
+  "info": {
+    "displayName": "Domains Grid",
+    "icon": "th-large"
+  },
+  "options": {},
+  "attributes": {
+    "subtitle": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    }
+  }
+}
