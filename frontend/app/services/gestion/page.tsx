@@ -11,7 +11,6 @@ export default function GestionPage() {
   return (
     <CategoryLandingPage
       category="gestion"
-      heroIcon="chart"
       heroTitle="Une gestion rigoureuse pour des activités sereines"
       heroDescription="Biens immobiliers, projets, ressources humaines et administration : SOGELOC prend en charge la gestion de vos activités avec rigueur, transparence et efficacité."
       offersDescription="Des solutions de gestion fiables, pensées pour vous libérer du quotidien opérationnel."

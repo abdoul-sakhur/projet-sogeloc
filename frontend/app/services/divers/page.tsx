@@ -11,7 +11,6 @@ export default function DiversPage() {
   return (
     <CategoryLandingPage
       category="divers"
-      heroIcon="grid"
       heroTitle="Des services complémentaires à votre écoute"
       heroDescription="Création d'entreprise, événementiel, nettoyage, agence de voyages : SOGELOC met aussi son savoir-faire au service de vos besoins ponctuels ou récurrents."
       offersDescription="Des prestations variées, avec la même exigence de qualité et de sérieux."

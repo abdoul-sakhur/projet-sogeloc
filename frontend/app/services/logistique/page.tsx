@@ -11,7 +11,6 @@ export default function LogistiquePage() {
   return (
     <CategoryLandingPage
       category="logistique"
-      heroIcon="truck"
       heroTitle="Votre logistique entre de bonnes mains"
       heroDescription="De l'acheminement à la livraison, en passant par le dédouanement et le stockage, SOGELOC prend en charge l'ensemble de votre chaîne logistique avec des solutions fiables et adaptées à vos besoins."
       offersDescription="Des solutions logistiques fiables, pensées pour accompagner vos marchandises à chaque étape."

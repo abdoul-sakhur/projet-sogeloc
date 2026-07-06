@@ -1,11 +1,11 @@
 {
   "kind": "collectionType",
-  "collectionName": "projects",
+  "collectionName": "articles",
   "info": {
-    "singularName": "project",
-    "pluralName": "projects",
-    "displayName": "Project",
-    "description": "Projets et réalisations de l'entreprise"
+    "singularName": "article",
+    "pluralName": "articles",
+    "displayName": "Article",
+    "description": "Articles de blog / actualités"
   },
   "options": {
     "draftAndPublish": true
@@ -21,20 +21,17 @@
       "targetField": "title",
       "required": true
     },
-    "categories": {
-      "type": "json"
+    "category": {
+      "type": "string"
     },
-    "description": {
+    "author": {
+      "type": "string"
+    },
+    "excerpt": {
+      "type": "text"
+    },
+    "content": {
       "type": "richtext"
-    },
-    "client": {
-      "type": "string"
-    },
-    "location": {
-      "type": "string"
-    },
-    "servicesText": {
-      "type": "string"
     },
     "coverImage": {
       "type": "media",
@@ -45,15 +42,6 @@
       "type": "media",
       "multiple": false,
       "allowedTypes": ["images"]
-    },
-    "gallery": {
-      "type": "media",
-      "multiple": true,
-      "allowedTypes": ["images"]
-    },
-    "order": {
-      "type": "integer",
-      "default": 0
     }
   }
 }

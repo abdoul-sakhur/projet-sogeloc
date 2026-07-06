@@ -27,8 +27,16 @@ export default async function ProjectDetailPage({
 
   return (
     <>
-      <section className="relative flex min-h-[280px] items-center bg-dark px-6 py-16 text-white">
-        <div className="mx-auto max-w-4xl">
+      <section
+        className="relative flex min-h-[280px] items-center bg-dark bg-cover bg-center px-6 py-16 text-white"
+        style={
+          project.backgroundImage
+            ? { backgroundImage: `url(${strapiMediaUrl(project.backgroundImage.url)})` }
+            : undefined
+        }
+      >
+        {project.backgroundImage && <div className="absolute inset-0 bg-dark/50" />}
+        <div className="relative mx-auto max-w-4xl">
           <p className="font-heading text-sm font-bold uppercase tracking-wide text-primary">
             Nos projets
           </p>

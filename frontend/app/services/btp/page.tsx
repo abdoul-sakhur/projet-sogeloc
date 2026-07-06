@@ -11,7 +11,6 @@ export default function BtpPage() {
   return (
     <CategoryLandingPage
       category="btp"
-      heroIcon="building"
       heroTitle="Bâtir vos projets, du premier plan à la livraison"
       heroDescription="Construction de bâtiments, routes et ponts : SOGELOC accompagne entreprises et particuliers à chaque étape de leurs projets de Bâtiments et Travaux Publics, avec exigence et savoir-faire."
       offersDescription="Des réalisations solides et durables, pensées pour répondre aux besoins de nos clients."

@@ -441,6 +441,42 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
+  collectionName: 'articles';
+  info: {
+    description: 'Articles de blog / actualit\u00E9s';
+    displayName: 'Article';
+    pluralName: 'articles';
+    singularName: 'article';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    author: Schema.Attribute.String;
+    backgroundImage: Schema.Attribute.Media<'images'>;
+    category: Schema.Attribute.String;
+    content: Schema.Attribute.RichText;
+    coverImage: Schema.Attribute.Media<'images'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    excerpt: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::article.article'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiContactMessageContactMessage
   extends Struct.CollectionTypeSchema {
   collectionName: 'contact_messages';
@@ -533,6 +569,7 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'sections.page-title',
         'sections.hero',
         'sections.about',
+        'sections.domains-grid',
         'sections.services-grid',
         'sections.projects-grid',
         'sections.team-grid',
@@ -562,6 +599,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    backgroundImage: Schema.Attribute.Media<'images'>;
     categories: Schema.Attribute.JSON;
     client: Schema.Attribute.String;
     coverImage: Schema.Attribute.Media<'images'>;
@@ -581,8 +619,6 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     servicesText: Schema.Attribute.String;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    status: Schema.Attribute.Enumeration<['en-cours', 'completed']> &
-      Schema.Attribute.DefaultTo<'completed'>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -643,12 +679,15 @@ export interface ApiSiteSettingsSiteSetting extends Struct.SingleTypeSchema {
   };
   attributes: {
     address: Schema.Attribute.Text;
+    btpHeroImage: Schema.Attribute.Media<'images'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    diversHeroImage: Schema.Attribute.Media<'images'>;
     email: Schema.Attribute.Email;
     favicon: Schema.Attribute.Media<'images'>;
     footerText: Schema.Attribute.Text;
+    gestionHeroImage: Schema.Attribute.Media<'images'>;
     hours: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -656,6 +695,7 @@ export interface ApiSiteSettingsSiteSetting extends Struct.SingleTypeSchema {
       'api::site-settings.site-setting'
     > &
       Schema.Attribute.Private;
+    logistiqueHeroImage: Schema.Attribute.Media<'images'>;
     logo: Schema.Attribute.Media<'images'>;
     mapLat: Schema.Attribute.Decimal;
     mapLng: Schema.Attribute.Decimal;
@@ -1218,6 +1258,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::article.article': ApiArticleArticle;
       'api::contact-message.contact-message': ApiContactMessageContactMessage;
       'api::hero-slide.hero-slide': ApiHeroSlideHeroSlide;
       'api::page.page': ApiPagePage;

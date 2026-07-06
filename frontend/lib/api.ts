@@ -1,5 +1,6 @@
 import qs from "qs";
 import type {
+  Article,
   ContactFormInput,
   Page,
   Project,
@@ -19,6 +20,7 @@ const PAGE_POPULATE = {
       "sections.page-title": { populate: ["backgroundImage"] },
       "sections.hero": { populate: { slides: { populate: ["backgroundImage"] } } },
       "sections.about": { populate: ["image", "cta"] },
+      "sections.domains-grid": true,
       "sections.services-grid": { populate: { services: { populate: ["image", "hoverImage"] } } },
       "sections.projects-grid": { populate: { projects: { populate: ["coverImage"] } } },
       "sections.team-grid": { populate: { members: { populate: ["image"] } } },
@@ -64,14 +66,14 @@ export const fetchServices = (category?: Service["category"]) =>
 
 export const fetchProjects = () =>
   strapiFetch<Project[]>("/projects", {
-    populate: ["coverImage"],
+    populate: ["coverImage", "backgroundImage"],
     sort: ["order:asc"],
   });
 
 export const fetchProjectBySlug = (slug: string) =>
   strapiFetch<Project[]>("/projects", {
     filters: { slug: { $eq: slug } },
-    populate: ["coverImage", "gallery"],
+    populate: ["coverImage", "backgroundImage", "gallery"],
   }).then((projects) => projects[0]);
 
 export const fetchTeam = () =>
@@ -80,9 +82,29 @@ export const fetchTeam = () =>
     sort: ["order:asc"],
   });
 
+export const fetchArticles = () =>
+  strapiFetch<Article[]>("/articles", {
+    populate: ["coverImage", "backgroundImage"],
+    sort: ["publishedAt:desc"],
+  });
+
+export const fetchArticleBySlug = (slug: string) =>
+  strapiFetch<Article[]>("/articles", {
+    filters: { slug: { $eq: slug } },
+    populate: ["coverImage", "backgroundImage"],
+  }).then((articles) => articles[0]);
+
 export const fetchSettings = () =>
   strapiFetch<SiteSettings>("/site-setting", {
-    populate: ["logo", "favicon", "social"],
+    populate: [
+      "logo",
+      "favicon",
+      "social",
+      "btpHeroImage",
+      "logistiqueHeroImage",
+      "gestionHeroImage",
+      "diversHeroImage",
+    ],
   });
 
 export const submitContactForm = async (data: ContactFormInput) => {

@@ -13,7 +13,6 @@ export default async function CategoryLandingPage({
   offersDescription,
   contactHeading,
   contactDescription,
-  heroIcon = "building",
 }: {
   category: Service["category"];
   heroTitle: string;
@@ -21,7 +20,6 @@ export default async function CategoryLandingPage({
   offersDescription: string;
   contactHeading: string;
   contactDescription: string;
-  heroIcon?: "truck" | "building" | "chart" | "grid";
 }) {
   const [services, settings] = await Promise.all([
     fetchServices(category).catch(() => []),
@@ -32,28 +30,36 @@ export default async function CategoryLandingPage({
   const phone = settings?.phone || FALLBACK_SETTINGS.phone;
   const highlights = services.slice(0, 3);
 
+  const heroImageByCategory = {
+    btp: settings?.btpHeroImage,
+    logistique: settings?.logistiqueHeroImage,
+    gestion: settings?.gestionHeroImage,
+    divers: settings?.diversHeroImage,
+  };
+  const heroImage = heroImageByCategory[category];
+
   return (
     <>
       {/* Hero */}
-      <section className="bg-surface px-6 py-16 md:py-20">
-        <div className="mx-auto max-w-[1140px]">
+      <section
+        className="relative overflow-hidden bg-dark bg-cover bg-center px-6 py-16 md:py-20"
+        style={
+          heroImage
+            ? { backgroundImage: `url(${strapiMediaUrl(heroImage.url)})` }
+            : { backgroundImage: "linear-gradient(135deg, var(--color-primary-alt), var(--color-primary), var(--color-dark))" }
+        }
+      >
+        <div className="absolute inset-0 bg-dark/60" />
+
+        <div className="relative mx-auto max-w-[1140px]">
           <div className="grid gap-6 md:grid-cols-2 md:items-start md:gap-10">
-            <h1 className="font-heading text-[32px] font-bold leading-tight text-dark md:text-[46px]">
+            <h1 className="font-heading text-[32px] font-bold leading-tight text-white md:text-[46px]">
               {heroTitle}
             </h1>
-            <p className="text-[16px] leading-[27px] text-body md:pt-2">{heroDescription}</p>
+            <p className="text-[16px] leading-[27px] text-white/85 md:pt-2">{heroDescription}</p>
           </div>
 
-          <div className="relative mt-10 aspect-[16/6] w-full overflow-hidden rounded-[4px] bg-gradient-to-br from-primary-alt via-primary to-dark">
-            <div className="absolute inset-0 flex items-center justify-center text-white/80">
-              {heroIcon === "truck" && <TruckIcon />}
-              {heroIcon === "building" && <BuildingIcon />}
-              {heroIcon === "chart" && <ChartIcon />}
-              {heroIcon === "grid" && <GridIcon />}
-            </div>
-          </div>
-
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-end">
             <a
               href={`mailto:${email}`}
               className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
@@ -194,47 +200,6 @@ export default async function CategoryLandingPage({
         </div>
       </section>
     </>
-  );
-}
-
-function TruckIcon() {
-  return (
-    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-      <path d="M1 3h13v13H1z" />
-      <path d="M14 8h4l3 3v5h-7V8Z" />
-      <circle cx="5.5" cy="17.5" r="1.8" />
-      <circle cx="17.5" cy="17.5" r="1.8" />
-    </svg>
-  );
-}
-
-function BuildingIcon() {
-  return (
-    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-      <path d="M4 21V6l8-3 8 3v15" />
-      <path d="M9 21v-6h6v6" />
-      <path d="M9 10h.01M9 14h.01M15 10h.01M15 14h.01" />
-    </svg>
-  );
-}
-
-function ChartIcon() {
-  return (
-    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-      <path d="M4 4v16h16" />
-      <path d="M8 16V10M13 16V7M18 16v-4" />
-    </svg>
-  );
-}
-
-function GridIcon() {
-  return (
-    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-      <rect x="3" y="3" width="8" height="8" rx="1" />
-      <rect x="13" y="3" width="8" height="8" rx="1" />
-      <rect x="3" y="13" width="8" height="8" rx="1" />
-      <rect x="13" y="13" width="8" height="8" rx="1" />
-    </svg>
   );
 }
 

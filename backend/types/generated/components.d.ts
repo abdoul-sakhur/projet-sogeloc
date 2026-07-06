@@ -44,6 +44,18 @@ export interface SectionsCtaBanner extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsDomainsGrid extends Struct.ComponentSchema {
+  collectionName: 'components_sections_domains_grids';
+  info: {
+    displayName: 'Domains Grid';
+    icon: 'th-large';
+  };
+  attributes: {
+    subtitle: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface SectionsHero extends Struct.ComponentSchema {
   collectionName: 'components_sections_heroes';
   info: {
@@ -187,6 +199,7 @@ declare module '@strapi/strapi' {
       'sections.about': SectionsAbout;
       'sections.contact': SectionsContact;
       'sections.cta-banner': SectionsCtaBanner;
+      'sections.domains-grid': SectionsDomainsGrid;
       'sections.hero': SectionsHero;
       'sections.page-title': SectionsPageTitle;
       'sections.projects-grid': SectionsProjectsGrid;

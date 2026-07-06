@@ -67,10 +67,24 @@ export interface Project {
   client?: string;
   location?: string;
   servicesText?: string;
-  status: "en-cours" | "completed";
   coverImage?: Media;
+  backgroundImage?: Media;
   gallery?: Media[];
   order: number;
+}
+
+export interface Article {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  category?: string;
+  author?: string;
+  excerpt?: string;
+  content?: string;
+  coverImage?: Media;
+  backgroundImage?: Media;
+  publishedAt: string;
 }
 
 export interface TeamMember {
@@ -109,6 +123,11 @@ export interface AboutSection extends SectionBase<"sections.about"> {
   videoUrl?: string;
   videoLabel?: string;
   cta?: Cta;
+}
+
+export interface DomainsGridSection extends SectionBase<"sections.domains-grid"> {
+  subtitle?: string;
+  title?: string;
 }
 
 export interface ServicesGridSection extends SectionBase<"sections.services-grid"> {
@@ -154,6 +173,7 @@ export type Section =
   | PageTitleSection
   | HeroSection
   | AboutSection
+  | DomainsGridSection
   | ServicesGridSection
   | ProjectsGridSection
   | TeamGridSection
@@ -184,6 +204,10 @@ export interface SiteSettings {
   mapLng?: number;
   social?: SocialLinks;
   footerText?: string;
+  btpHeroImage?: Media;
+  logistiqueHeroImage?: Media;
+  gestionHeroImage?: Media;
+  diversHeroImage?: Media;
 }
 
 export interface ContactFormInput {
