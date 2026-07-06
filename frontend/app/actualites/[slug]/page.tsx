@@ -45,8 +45,24 @@ export default async function ArticleDetailPage({
   const shareUrl = `${SITE_URL}/actualites/${article.slug}`;
   const relatedArticles = allArticles.filter((a) => a.slug !== article.slug).slice(0, 6);
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.excerpt,
+    datePublished: article.publishedAt,
+    url: shareUrl,
+    ...(article.author ? { author: { "@type": "Person", name: article.author } } : {}),
+    ...(article.coverImage ? { image: strapiMediaUrl(article.coverImage.url) } : {}),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       {article.backgroundImage && (
         <section
           className="relative flex min-h-[220px] items-center bg-dark bg-cover bg-center px-6 py-12 text-white"

@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { fetchProjectBySlug, strapiMediaUrl } from "@/lib/api";
 import RichText from "@/components/RichText";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sogeloc.com";
+
 export async function generateMetadata({
   params,
 }: {
@@ -25,8 +27,23 @@ export default async function ProjectDetailPage({
   const project = await fetchProjectBySlug(slug).catch(() => null);
   if (!project) notFound();
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.title,
+    description: project.servicesText,
+    url: `${SITE_URL}/projets/${project.slug}`,
+    ...(project.location ? { locationCreated: { "@type": "Place", name: project.location } } : {}),
+    ...(project.coverImage ? { image: strapiMediaUrl(project.coverImage.url) } : {}),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       <section
         className="relative flex min-h-[280px] items-center bg-dark bg-cover bg-center px-6 py-16 text-white"
         style={
