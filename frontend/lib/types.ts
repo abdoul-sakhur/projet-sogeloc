@@ -166,6 +166,7 @@ export interface CtaBannerSection extends SectionBase<"sections.cta-banner"> {
   title: string;
   subtitle?: string;
   backgroundImage?: Media;
+  image?: Media;
   cta?: Cta;
 }
 

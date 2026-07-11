@@ -26,7 +26,7 @@ const PAGE_POPULATE = {
       "sections.team-grid": { populate: { members: { populate: ["image"] } } },
       "sections.stats": { populate: ["backgroundImage", "counters"] },
       "sections.contact": true,
-      "sections.cta-banner": { populate: ["backgroundImage", "cta"] },
+      "sections.cta-banner": { populate: ["backgroundImage", "image", "cta"] },
     },
   },
 };

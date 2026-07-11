@@ -5,6 +5,7 @@ import { strapiMediaUrl } from "@/lib/api";
 import SectionHeading from "@/components/SectionHeading";
 import RichText from "@/components/RichText";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
+import LinkPendingIndicator from "@/components/LinkPendingIndicator";
 
 export default function AboutSection({ section }: { section: AboutSectionType }) {
   return (
@@ -23,6 +24,7 @@ export default function AboutSection({ section }: { section: AboutSectionType })
             }`}
           >
             {section.cta.label}
+            <LinkPendingIndicator />
           </Link>
         )}
       </div>

@@ -39,3 +39,21 @@
     color: var(--color-dark);
   }
 }
+
+@keyframes spin-brand {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.spinner {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  --dot: 8px;
+  background:
+    radial-gradient(farthest-side, var(--color-primary) 94%, #0000) top / var(--dot) var(--dot) no-repeat,
+    conic-gradient(#0000 30%, var(--color-primary));
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - var(--dot)), #000 0);
+  mask: radial-gradient(farthest-side, #0000 calc(100% - var(--dot)), #000 0);
+  animation: spin-brand 1s infinite linear;
+}

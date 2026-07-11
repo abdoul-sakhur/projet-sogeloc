@@ -39,6 +39,7 @@ export interface SectionsCtaBanner extends Struct.ComponentSchema {
   attributes: {
     backgroundImage: Schema.Attribute.Media<'images'>;
     cta: Schema.Attribute.Component<'shared.cta', false>;
+    image: Schema.Attribute.Media<'images'>;
     subtitle: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };

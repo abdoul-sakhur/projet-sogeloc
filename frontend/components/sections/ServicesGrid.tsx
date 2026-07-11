@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ServicesGridSection } from "@/lib/types";
 import { strapiMediaUrl } from "@/lib/api";
 import SectionHeading from "@/components/SectionHeading";
+import LinkPendingIndicator from "@/components/LinkPendingIndicator";
 
 export default function ServicesGrid({ section }: { section: ServicesGridSection }) {
   const services = [...section.services].sort((a, b) => a.order - b.order);
@@ -26,6 +27,7 @@ export default function ServicesGrid({ section }: { section: ServicesGridSection
               className="inline-flex h-[48px] items-center justify-center rounded-full border border-dark px-6 text-sm font-semibold text-dark transition-colors hover:bg-dark hover:text-white"
             >
               Voir la page dédiée
+              <LinkPendingIndicator />
             </Link>
           )}
         </div>

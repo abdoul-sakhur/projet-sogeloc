@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { DomainsGridSection } from "@/lib/types";
 import SectionHeading from "@/components/SectionHeading";
+import LinkPendingIndicator from "@/components/LinkPendingIndicator";
 
 const DOMAINS = [
   {
@@ -52,8 +53,9 @@ export default function DomainsGrid({ section }: { section: DomainsGridSection }
                 {domain.title}
               </h3>
               <p className="mt-2 text-[14px] leading-[22px] text-body">{domain.description}</p>
-              <span className="mt-4 inline-block text-[13px] font-bold text-primary">
+              <span className="mt-4 inline-flex items-center text-[13px] font-bold text-primary">
                 En savoir plus →
+                <LinkPendingIndicator />
               </span>
             </Link>
           ))}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/lib/constants";
+import LinkPendingIndicator from "@/components/LinkPendingIndicator";
 
 export default function NavLinks({ transparent }: { transparent: boolean }) {
   const pathname = usePathname();
@@ -20,6 +21,7 @@ export default function NavLinks({ transparent }: { transparent: boolean }) {
             } ${transparent ? "text-white" : "text-dark"}`}
           >
             {link.label}
+            <LinkPendingIndicator size={11} />
           </Link>
         );
       })}

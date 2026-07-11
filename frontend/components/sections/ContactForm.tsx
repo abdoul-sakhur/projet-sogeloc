@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { submitContactForm } from "@/lib/api";
+import Spinner from "@/components/Spinner";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -63,8 +64,9 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="inline-flex h-[65px] min-w-[170px] items-center justify-center rounded-[3px] bg-primary px-6 font-sans text-sm font-bold capitalize tracking-wide text-white transition-colors hover:bg-primary-hover disabled:opacity-60"
+        className="inline-flex h-[65px] min-w-[170px] items-center justify-center gap-2 rounded-[3px] bg-primary px-6 font-sans text-sm font-bold capitalize tracking-wide text-white transition-colors hover:bg-primary-hover disabled:opacity-60"
       >
+        {status === "loading" && <Spinner size={18} />}
         {status === "loading" ? "Envoi..." : "Envoyer"}
       </button>
 

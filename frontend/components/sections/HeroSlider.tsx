@@ -6,6 +6,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import type { HeroSection } from "@/lib/types";
 import { strapiMediaUrl } from "@/lib/api";
+import LinkPendingIndicator from "@/components/LinkPendingIndicator";
 
 const AUTOPLAY_MS = 10000;
 
@@ -64,6 +65,7 @@ export default function HeroSlider({ section }: { section: HeroSection }) {
                         className="mt-[30px] inline-flex h-[65px] min-w-[170px] items-center justify-center rounded-[3px] bg-primary px-6 font-sans text-sm font-bold capitalize tracking-wide text-white transition-colors hover:bg-primary-hover"
                       >
                         {slide.ctaLabel}
+                        <LinkPendingIndicator />
                       </Link>
                     )}
                   </div>

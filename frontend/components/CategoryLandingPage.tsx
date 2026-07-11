@@ -5,6 +5,7 @@ import { fetchServices, fetchSettings, strapiMediaUrl } from "@/lib/api";
 import { FALLBACK_SETTINGS } from "@/lib/constants";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import ContactForm from "@/components/sections/ContactForm";
+import LinkPendingIndicator from "@/components/LinkPendingIndicator";
 
 export default async function CategoryLandingPage({
   category,
@@ -148,6 +149,7 @@ export default async function CategoryLandingPage({
                     className="mt-5 inline-flex h-[48px] items-center justify-center rounded-full border border-dark px-6 text-sm font-semibold text-dark transition-colors hover:bg-dark hover:text-white"
                   >
                     En savoir plus
+                    <LinkPendingIndicator />
                   </Link>
                 </div>
               );
