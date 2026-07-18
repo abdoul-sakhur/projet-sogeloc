@@ -3,8 +3,13 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { fetchProjectBySlug, strapiMediaUrl } from "@/lib/api";
 import RichText from "@/components/RichText";
+import { SITE_URL, pageMetadata } from "@/lib/seo";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sogeloc.com";
+function projectDescription(project: NonNullable<Awaited<ReturnType<typeof fetchProjectBySlug>>>) {
+  if (project.servicesText) return project.servicesText;
+  if (project.description) return project.description.slice(0, 155);
+  return `${project.title}${project.location ? ` — ${project.location}` : ""} : découvrez cette réalisation SOGELOC.`;
+}
 
 export async function generateMetadata({
   params,
@@ -13,9 +18,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const project = await fetchProjectBySlug(slug).catch(() => null);
-  return {
-    title: project ? `${project.title} | SOGELOC` : "Projet",
-  };
+  if (!project) return { title: "Projet" };
+
+  return pageMetadata(
+    `/projets/${project.slug}`,
+    `${project.title} | SOGELOC`,
+    projectDescription(project)
+  );
 }
 
 export default async function ProjectDetailPage({

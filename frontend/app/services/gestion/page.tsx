@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import CategoryLandingPage from "@/components/CategoryLandingPage";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Gestion | SOGELOC",
-  description:
-    "Gestion de biens immobiliers, de projets, des ressources humaines et administrative : SOGELOC gère vos activités avec rigueur et efficacité.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/services/gestion",
+  "Gestion | SOGELOC",
+  "Gestion de biens immobiliers, de projets, des ressources humaines et administrative : SOGELOC gère vos activités avec rigueur et efficacité."
+);
 
 export default function GestionPage() {
   return (

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import CategoryLandingPage from "@/components/CategoryLandingPage";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Logistique | SOGELOC",
-  description:
-    "Transport, dédouanement, entreposage et gestion de stock : SOGELOC prend en charge l'ensemble de votre chaîne logistique.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/services/logistique",
+  "Logistique | SOGELOC",
+  "Transport, dédouanement, entreposage et gestion de stock : SOGELOC prend en charge l'ensemble de votre chaîne logistique."
+);
 
 export default function LogistiquePage() {
   return (

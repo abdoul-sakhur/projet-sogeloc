@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import CategoryLandingPage from "@/components/CategoryLandingPage";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Bâtiments - Travaux Publics | SOGELOC",
-  description:
-    "Construction de bâtiments, routes et ponts : SOGELOC réalise vos projets de Bâtiments et Travaux Publics de la conception à la livraison.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/services/btp",
+  "Bâtiments - Travaux Publics | SOGELOC",
+  "Construction de bâtiments, routes et ponts : SOGELOC réalise vos projets de Bâtiments et Travaux Publics de la conception à la livraison."
+);
 
 export default function BtpPage() {
   return (

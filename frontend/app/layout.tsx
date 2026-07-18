@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { fetchSettings, strapiMediaUrl } from "@/lib/api";
 import { FALLBACK_SETTINGS } from "@/lib/constants";
+import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const barlow = Barlow({
@@ -19,8 +20,6 @@ const roboto = Roboto({
   subsets: ["latin"],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sogeloc.com";
-
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await fetchSettings().catch(() => null);
   const siteName = settings?.siteName || FALLBACK_SETTINGS.siteName;
@@ -31,6 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(SITE_URL),
     title,
     description,
+    alternates: { canonical: "/" },
     openGraph: {
       title,
       description,

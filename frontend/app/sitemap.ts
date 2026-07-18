@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { fetchArticles, fetchProjects } from "@/lib/api";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sogeloc.com";
+import { SITE_URL } from "@/lib/seo";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [

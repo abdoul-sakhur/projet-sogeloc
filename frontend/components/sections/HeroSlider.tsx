@@ -35,7 +35,7 @@ export default function HeroSlider({ section }: { section: HeroSection }) {
     <section className="relative aspect-[1680/640] max-h-[640px] min-h-[280px] w-full overflow-hidden bg-dark">
       <div className="h-full overflow-hidden" ref={emblaRef}>
         <div className="flex h-full">
-          {slides.map((slide) => (
+          {slides.map((slide, index) => (
             <div key={slide.id} className="relative h-full min-w-0 flex-[0_0_100%]">
               <div
                 className="absolute inset-0 bg-cover bg-center"
@@ -51,11 +51,17 @@ export default function HeroSlider({ section }: { section: HeroSection }) {
               <div className="relative flex h-full items-center">
                 <div className="mx-auto w-full max-w-[1140px] px-6">
                   <div className="max-w-[650px]">
-                    <h1 className="font-heading text-[30px] font-bold leading-[1.2] text-white sm:text-[40px] md:text-[50px] lg:text-[65px] xl:text-[85px]">
-                      {slide.title}
-                    </h1>
+                    {index === 0 ? (
+                      <h1 className="font-heading text-[30px] font-bold leading-[1.2] text-white [text-shadow:0_3px_16px_rgba(0,0,0,0.65)] sm:text-[40px] md:text-[50px] lg:text-[65px] xl:text-[85px]">
+                        {slide.title}
+                      </h1>
+                    ) : (
+                      <p className="font-heading text-[30px] font-bold leading-[1.2] text-white [text-shadow:0_3px_16px_rgba(0,0,0,0.65)] sm:text-[40px] md:text-[50px] lg:text-[65px] xl:text-[85px]">
+                        {slide.title}
+                      </p>
+                    )}
                     {slide.description && (
-                      <p className="mt-[10px] max-w-[650px] text-[15px] font-bold leading-[1.5] text-white md:mt-[30px] md:text-[18px]">
+                      <p className="mt-[10px] max-w-[650px] text-[15px] font-bold leading-[1.5] text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.65)] md:mt-[30px] md:text-[18px]">
                         {slide.description}
                       </p>
                     )}

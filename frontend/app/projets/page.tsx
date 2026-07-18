@@ -3,11 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { fetchProjects, strapiMediaUrl } from "@/lib/api";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Nos réalisations | SOGELOC",
-  description: "Galerie photos des réalisations de SOGELOC : chantiers, projets livrés et en cours.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/projets",
+  "Nos réalisations | SOGELOC",
+  "Galerie photos des réalisations de SOGELOC : chantiers, projets livrés et en cours."
+);
 
 export default async function ProjetsPage() {
   const projects = await fetchProjects().catch(() => []);

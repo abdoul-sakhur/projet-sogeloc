@@ -5,8 +5,7 @@ import { notFound } from "next/navigation";
 import { fetchArticleBySlug, fetchArticles, strapiMediaUrl } from "@/lib/api";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import RichText from "@/components/RichText";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sogeloc.com";
+import { SITE_URL, pageMetadata } from "@/lib/seo";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("fr-FR", {
@@ -23,10 +22,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const article = await fetchArticleBySlug(slug).catch(() => null);
-  return {
-    title: article ? `${article.title} | SOGELOC` : "Article",
-    description: article?.excerpt,
-  };
+  if (!article) return { title: "Article" };
+
+  return pageMetadata(
+    `/actualites/${article.slug}`,
+    `${article.title.trim()} | SOGELOC`,
+    article.excerpt
+  );
 }
 
 export default async function ArticleDetailPage({
@@ -42,13 +44,14 @@ export default async function ArticleDetailPage({
 
   if (!article) notFound();
 
+  const title = article.title.trim();
   const shareUrl = `${SITE_URL}/actualites/${article.slug}`;
   const relatedArticles = allArticles.filter((a) => a.slug !== article.slug).slice(0, 6);
 
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: article.title,
+    headline: title,
     description: article.excerpt,
     datePublished: article.publishedAt,
     url: shareUrl,
@@ -73,7 +76,7 @@ export default async function ArticleDetailPage({
             <span className="font-heading text-sm font-bold uppercase tracking-wide text-primary">
               Actualités
             </span>
-            <h1 className="mt-2 font-heading text-2xl font-bold md:text-4xl">{article.title}</h1>
+            <h1 className="mt-2 font-heading text-2xl font-bold md:text-4xl">{title}</h1>
           </div>
         </section>
       )}
@@ -88,7 +91,7 @@ export default async function ArticleDetailPage({
           <article>
             {!article.backgroundImage && (
               <h1 className="font-heading text-[26px] font-bold text-dark md:text-[36px]">
-                {article.title}
+                {title}
               </h1>
             )}
             <p className="mt-3 text-[14px] text-body">
@@ -113,7 +116,7 @@ export default async function ArticleDetailPage({
 
             <div className="mt-6 flex items-center gap-3 border-b border-border pb-6">
               <span className="text-sm font-semibold text-dark">Partager :</span>
-              <ShareLinks url={shareUrl} title={article.title} />
+              <ShareLinks url={shareUrl} title={title} />
             </div>
 
             <RichText

@@ -3,11 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { fetchArticles, strapiMediaUrl } from "@/lib/api";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Actualités | SOGELOC",
-  description: "Suivez l'actualité de SOGELOC : chantiers, vie de l'entreprise et actualités du secteur.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/actualites",
+  "Actualités | SOGELOC",
+  "Suivez l'actualité de SOGELOC : chantiers, vie de l'entreprise et actualités du secteur."
+);
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("fr-FR", {
