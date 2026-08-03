@@ -6,11 +6,12 @@ import SectionHeading from "@/components/SectionHeading";
 import RichText from "@/components/RichText";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import LinkPendingIndicator from "@/components/LinkPendingIndicator";
+import Reveal from "@/components/Reveal";
 
 export default function AboutSection({ section }: { section: AboutSectionType }) {
   return (
     <section className="mx-auto grid max-w-[1140px] gap-12 px-6 py-20 md:grid-cols-2 md:items-center md:gap-8">
-      <div>
+      <Reveal direction="left">
         <SectionHeading subtitle={section.subtitle} title={section.title} size="large" />
         <RichText content={section.content} className="mt-6 text-justify text-[16px] leading-[27px] text-body" />
 
@@ -27,9 +28,9 @@ export default function AboutSection({ section }: { section: AboutSectionType })
             <LinkPendingIndicator />
           </Link>
         )}
-      </div>
+      </Reveal>
 
-      <div className="relative">
+      <Reveal direction="right" className="relative">
         <div className="relative aspect-4/3 overflow-hidden rounded-[3px]">
           {section.image ? (
             <Image
@@ -59,7 +60,7 @@ export default function AboutSection({ section }: { section: AboutSectionType })
             </a>
           </div>
         )}
-      </div>
+      </Reveal>
     </section>
   );
 }

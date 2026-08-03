@@ -57,3 +57,24 @@
   mask: radial-gradient(farthest-side, #0000 calc(100% - var(--dot)), #000 0);
   animation: spin-brand 1s infinite linear;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal-left {
+    transform: translateX(-110px);
+  }
+
+  .reveal-right {
+    transform: translateX(110px);
+  }
+
+  .reveal-visible {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}

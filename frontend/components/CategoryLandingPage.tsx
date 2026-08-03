@@ -6,6 +6,7 @@ import { FALLBACK_SETTINGS } from "@/lib/constants";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import ContactForm from "@/components/sections/ContactForm";
 import LinkPendingIndicator from "@/components/LinkPendingIndicator";
+import Reveal from "@/components/Reveal";
 
 export default async function CategoryLandingPage({
   category,
@@ -81,7 +82,7 @@ export default async function CategoryLandingPage({
 
       {/* Bandeau offres */}
       {highlights.length > 0 && (
-        <section className="bg-dark px-6 py-16">
+        <Reveal as="section" className="bg-dark px-6 py-16">
           <div className="mx-auto grid max-w-[1140px] gap-10 md:grid-cols-[280px_1fr] md:items-center">
             <div>
               <span className="block font-heading text-[15px] font-bold uppercase text-primary">
@@ -92,23 +93,25 @@ export default async function CategoryLandingPage({
 
             <div className="grid gap-6 sm:grid-cols-3">
               {highlights.map((service, i) => (
-                <div key={service.id} className="rounded-[4px] bg-white p-6 shadow-md">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-alt text-primary">
-                    <OfferIcon index={i} />
+                <Reveal key={service.id} delay={i * 100}>
+                  <div className="rounded-[4px] bg-white p-6 shadow-md">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-surface-alt text-primary">
+                      <OfferIcon index={i} />
+                    </div>
+                    <h3 className="font-heading text-[17px] font-bold text-dark">
+                      {service.title}
+                    </h3>
+                    {service.description && (
+                      <p className="mt-2 text-[14px] leading-[22px] text-body">
+                        {service.description}
+                      </p>
+                    )}
                   </div>
-                  <h3 className="font-heading text-[17px] font-bold text-dark">
-                    {service.title}
-                  </h3>
-                  {service.description && (
-                    <p className="mt-2 text-[14px] leading-[22px] text-body">
-                      {service.description}
-                    </p>
-                  )}
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
-        </section>
+        </Reveal>
       )}
 
       {/* Rangées alternées image / texte */}
@@ -155,7 +158,7 @@ export default async function CategoryLandingPage({
               );
 
               return (
-                <div key={service.id} className="grid items-center gap-8 md:grid-cols-2">
+                <Reveal key={service.id} className="grid items-center gap-8 md:grid-cols-2">
                   {i % 2 === 0 ? (
                     <>
                       {imageBlock}
@@ -167,7 +170,7 @@ export default async function CategoryLandingPage({
                       {imageBlock}
                     </>
                   )}
-                </div>
+                </Reveal>
               );
             })}
           </div>
@@ -175,7 +178,7 @@ export default async function CategoryLandingPage({
       )}
 
       {/* Bandeau contact */}
-      <section className="bg-dark px-6 py-16 md:py-20">
+      <Reveal as="section" className="bg-dark px-6 py-16 md:py-20">
         <div className="mx-auto grid max-w-[1140px] gap-10 md:grid-cols-2 md:items-center">
           <div>
             <h2 className="font-heading text-[28px] font-bold text-white md:text-[36px]">
@@ -200,7 +203,7 @@ export default async function CategoryLandingPage({
             </div>
           </div>
         </div>
-      </section>
+      </Reveal>
     </>
   );
 }

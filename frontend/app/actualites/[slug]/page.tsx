@@ -6,6 +6,7 @@ import { fetchArticleBySlug, fetchArticles, strapiMediaUrl } from "@/lib/api";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import RichText from "@/components/RichText";
 import { SITE_URL, pageMetadata } from "@/lib/seo";
+import Reveal from "@/components/Reveal";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("fr-FR", {
@@ -131,9 +132,9 @@ export default async function ArticleDetailPage({
               {relatedArticles.length === 0 && (
                 <p className="text-sm text-body">Aucun autre article pour l&apos;instant.</p>
               )}
-              {relatedArticles.map((related) => (
+              {relatedArticles.map((related, i) => (
+                <Reveal key={related.id} delay={Math.min(i, 5) * 80}>
                 <Link
-                  key={related.id}
                   href={`/actualites/${related.slug}`}
                   className="group flex gap-3"
                 >
@@ -158,6 +159,7 @@ export default async function ArticleDetailPage({
                     )}
                   </div>
                 </Link>
+                </Reveal>
               ))}
             </div>
           </aside>

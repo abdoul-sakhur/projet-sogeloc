@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { DomainsGridSection } from "@/lib/types";
 import SectionHeading from "@/components/SectionHeading";
 import LinkPendingIndicator from "@/components/LinkPendingIndicator";
+import Reveal from "@/components/Reveal";
 
 const DOMAINS = [
   {
@@ -40,24 +41,25 @@ export default function DomainsGrid({ section }: { section: DomainsGridSection }
         />
 
         <div className="mt-10 grid gap-[30px] sm:grid-cols-2 lg:grid-cols-4">
-          {DOMAINS.map((domain) => (
-            <Link
-              key={domain.href}
-              href={domain.href}
-              className="group block rounded-[4px] bg-white p-8 shadow-[0px_5px_83px_0px_rgba(40,40,40,0.06)] transition-transform duration-300 hover:-translate-y-[5px]"
-            >
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-surface-alt text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-                <DomainIcon icon={domain.icon} />
-              </div>
-              <h3 className="mt-6 font-heading text-[19px] font-bold text-dark">
-                {domain.title}
-              </h3>
-              <p className="mt-2 text-[14px] leading-[22px] text-body">{domain.description}</p>
-              <span className="mt-4 inline-flex items-center text-[13px] font-bold text-primary">
-                En savoir plus →
-                <LinkPendingIndicator />
-              </span>
-            </Link>
+          {DOMAINS.map((domain, i) => (
+            <Reveal key={domain.href} delay={Math.min(i, 3) * 100}>
+              <Link
+                href={domain.href}
+                className="group block rounded-[4px] bg-white p-8 shadow-[0px_5px_83px_0px_rgba(40,40,40,0.06)] transition-transform duration-300 hover:-translate-y-[5px]"
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-surface-alt text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                  <DomainIcon icon={domain.icon} />
+                </div>
+                <h3 className="mt-6 font-heading text-[19px] font-bold text-dark">
+                  {domain.title}
+                </h3>
+                <p className="mt-2 text-[14px] leading-[22px] text-body">{domain.description}</p>
+                <span className="mt-4 inline-flex items-center text-[13px] font-bold text-primary">
+                  En savoir plus →
+                  <LinkPendingIndicator />
+                </span>
+              </Link>
+            </Reveal>
           ))}
         </div>
       </div>

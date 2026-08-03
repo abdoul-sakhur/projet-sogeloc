@@ -4,6 +4,7 @@ import Link from "next/link";
 import { fetchArticles, strapiMediaUrl } from "@/lib/api";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import { pageMetadata } from "@/lib/seo";
+import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = pageMetadata(
   "/actualites",
@@ -41,39 +42,40 @@ export default async function ActualitesPage() {
             <p className="text-body">Aucun article publié pour l&apos;instant. Revenez bientôt.</p>
           ) : (
             <div className="grid gap-[30px] sm:grid-cols-2 lg:grid-cols-3">
-              {articles.map((article) => (
-                <Link
-                  key={article.id}
-                  href={`/actualites/${article.slug}`}
-                  className="group block overflow-hidden rounded-[4px] bg-white shadow-[0px_5px_83px_0px_rgba(40,40,40,0.04)] transition-transform duration-300 hover:-translate-y-[5px]"
-                >
-                  <div className="relative aspect-4/3 overflow-hidden">
-                    {article.coverImage ? (
-                      <Image
-                        src={strapiMediaUrl(article.coverImage.url)}
-                        alt={article.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      <ImagePlaceholder />
-                    )}
-                  </div>
-                  <div className="p-5">
-                    {article.category && (
-                      <span className="font-sans text-[13px] font-bold text-primary">
-                        {article.category}
-                      </span>
-                    )}
-                    <h2 className="mt-2 font-heading text-[18px] font-bold text-dark">
-                      {article.title}
-                    </h2>
-                    {article.excerpt && (
-                      <p className="mt-2 text-[14px] leading-[22px] text-body">{article.excerpt}</p>
-                    )}
-                    <p className="mt-3 text-[12px] text-body/70">{formatDate(article.publishedAt)}</p>
-                  </div>
-                </Link>
+              {articles.map((article, i) => (
+                <Reveal key={article.id} delay={Math.min(i, 5) * 80}>
+                  <Link
+                    href={`/actualites/${article.slug}`}
+                    className="group block overflow-hidden rounded-[4px] bg-white shadow-[0px_5px_83px_0px_rgba(40,40,40,0.04)] transition-transform duration-300 hover:-translate-y-[5px]"
+                  >
+                    <div className="relative aspect-4/3 overflow-hidden">
+                      {article.coverImage ? (
+                        <Image
+                          src={strapiMediaUrl(article.coverImage.url)}
+                          alt={article.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      ) : (
+                        <ImagePlaceholder />
+                      )}
+                    </div>
+                    <div className="p-5">
+                      {article.category && (
+                        <span className="font-sans text-[13px] font-bold text-primary">
+                          {article.category}
+                        </span>
+                      )}
+                      <h2 className="mt-2 font-heading text-[18px] font-bold text-dark">
+                        {article.title}
+                      </h2>
+                      {article.excerpt && (
+                        <p className="mt-2 text-[14px] leading-[22px] text-body">{article.excerpt}</p>
+                      )}
+                      <p className="mt-3 text-[12px] text-body/70">{formatDate(article.publishedAt)}</p>
+                    </div>
+                  </Link>
+                </Reveal>
               ))}
             </div>
           )}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { fetchProjects, strapiMediaUrl } from "@/lib/api";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import { pageMetadata } from "@/lib/seo";
+import Reveal from "@/components/Reveal";
 
 export const metadata: Metadata = pageMetadata(
   "/projets",
@@ -35,33 +36,34 @@ export default async function ProjetsPage() {
             </p>
           ) : (
             <div className="grid gap-[30px] sm:grid-cols-2 lg:grid-cols-3">
-              {projects.map((project) => (
-                <Link
-                  key={project.id}
-                  href={`/projets/${project.slug}`}
-                  className="group relative block aspect-4/3 overflow-hidden rounded-[4px]"
-                >
-                  {project.coverImage ? (
-                    <Image
-                      src={strapiMediaUrl(project.coverImage.url)}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <ImagePlaceholder />
-                  )}
-                  <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-dark/80 via-dark/10 to-transparent p-5">
-                    {project.categories && project.categories.length > 0 && (
-                      <span className="font-sans text-[12px] font-bold text-primary">
-                        {project.categories.join(" · ")}
-                      </span>
+              {projects.map((project, i) => (
+                <Reveal key={project.id} delay={Math.min(i, 5) * 80}>
+                  <Link
+                    href={`/projets/${project.slug}`}
+                    className="group relative block aspect-4/3 overflow-hidden rounded-[4px]"
+                  >
+                    {project.coverImage ? (
+                      <Image
+                        src={strapiMediaUrl(project.coverImage.url)}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <ImagePlaceholder />
                     )}
-                    <h2 className="mt-1 font-heading text-[18px] font-bold text-white">
-                      {project.title}
-                    </h2>
-                  </div>
-                </Link>
+                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-dark/80 via-dark/10 to-transparent p-5">
+                      {project.categories && project.categories.length > 0 && (
+                        <span className="font-sans text-[12px] font-bold text-primary">
+                          {project.categories.join(" · ")}
+                        </span>
+                      )}
+                      <h2 className="mt-1 font-heading text-[18px] font-bold text-white">
+                        {project.title}
+                      </h2>
+                    </div>
+                  </Link>
+                </Reveal>
               ))}
             </div>
           )}

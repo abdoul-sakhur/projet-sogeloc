@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { fetchProjectBySlug, strapiMediaUrl } from "@/lib/api";
 import RichText from "@/components/RichText";
 import { SITE_URL, pageMetadata } from "@/lib/seo";
+import Reveal from "@/components/Reveal";
 
 function projectDescription(project: NonNullable<Awaited<ReturnType<typeof fetchProjectBySlug>>>) {
   if (project.servicesText) return project.servicesText;
@@ -76,21 +77,21 @@ export default async function ProjectDetailPage({
       {project.gallery && project.gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 py-16">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-            {project.gallery.map((image) => (
-              <div key={image.id} className="relative aspect-4/3 overflow-hidden">
+            {project.gallery.map((image, i) => (
+              <Reveal key={image.id} delay={Math.min(i, 5) * 80} className="relative aspect-4/3 overflow-hidden">
                 <Image
                   src={strapiMediaUrl(image.url)}
                   alt={project.title}
                   fill
                   className="object-cover"
                 />
-              </div>
+              </Reveal>
             ))}
           </div>
         </section>
       )}
 
-      <section className="mx-auto max-w-4xl px-6 pb-20">
+      <Reveal as="section" className="mx-auto max-w-4xl px-6 pb-20">
         <h2 className="font-heading text-2xl font-bold text-dark">À savoir</h2>
         <RichText content={project.description} className="mt-4 text-body" />
 
@@ -120,7 +121,7 @@ export default async function ProjectDetailPage({
             </div>
           )}
         </dl>
-      </section>
+      </Reveal>
     </>
   );
 }

@@ -9,6 +9,7 @@ import TeamGrid from "./sections/TeamGrid";
 import StatsBanner from "./sections/StatsBanner";
 import ContactSection from "./sections/ContactSection";
 import CtaBanner from "./sections/CtaBanner";
+import Reveal from "./Reveal";
 
 export default function PageBuilder({ sections }: { sections: Section[] }) {
   return (
@@ -19,26 +20,57 @@ export default function PageBuilder({ sections }: { sections: Section[] }) {
         const key = `${section.__component}-${section.id}`;
 
         switch (section.__component) {
+          // Bannières au-dessus de la ligne de flottaison : visibles au chargement,
+          // pas d'animation d'apparition au scroll.
           case "sections.page-title":
             return <PageTitleBanner key={key} section={section} />;
           case "sections.hero":
             return <HeroSlider key={key} section={section} />;
           case "sections.about":
+            // AboutSection anime elle-même ses deux colonnes (slide-in gauche/droite).
             return <AboutSection key={key} section={section} />;
           case "sections.domains-grid":
-            return <DomainsGrid key={key} section={section} />;
+            return (
+              <Reveal key={key}>
+                <DomainsGrid section={section} />
+              </Reveal>
+            );
           case "sections.services-grid":
-            return <ServicesGrid key={key} section={section} />;
+            return (
+              <Reveal key={key}>
+                <ServicesGrid section={section} />
+              </Reveal>
+            );
           case "sections.projects-grid":
-            return <ProjectsGrid key={key} section={section} />;
+            return (
+              <Reveal key={key}>
+                <ProjectsGrid section={section} />
+              </Reveal>
+            );
           case "sections.team-grid":
-            return <TeamGrid key={key} section={section} />;
+            return (
+              <Reveal key={key}>
+                <TeamGrid section={section} />
+              </Reveal>
+            );
           case "sections.stats":
-            return <StatsBanner key={key} section={section} />;
+            return (
+              <Reveal key={key}>
+                <StatsBanner section={section} />
+              </Reveal>
+            );
           case "sections.contact":
-            return <ContactSection key={key} section={section} />;
+            return (
+              <Reveal key={key}>
+                <ContactSection section={section} />
+              </Reveal>
+            );
           case "sections.cta-banner":
-            return <CtaBanner key={key} section={section} />;
+            return (
+              <Reveal key={key}>
+                <CtaBanner section={section} />
+              </Reveal>
+            );
           default:
             return null;
         }
