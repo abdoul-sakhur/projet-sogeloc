@@ -7,6 +7,7 @@ import ImagePlaceholder from "@/components/ImagePlaceholder";
 import RichText from "@/components/RichText";
 import { SITE_URL, pageMetadata } from "@/lib/seo";
 import Reveal from "@/components/Reveal";
+import Breadcrumb from "@/components/Breadcrumb";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("fr-FR", {
@@ -28,7 +29,8 @@ export async function generateMetadata({
   return pageMetadata(
     `/actualites/${article.slug}`,
     `${article.title.trim()} | SOGELOC`,
-    article.excerpt
+    article.excerpt,
+    article.coverImage ? strapiMediaUrl(article.coverImage.url) : undefined
   );
 }
 
@@ -65,6 +67,14 @@ export default async function ArticleDetailPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
+      <Breadcrumb
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Actualités", href: "/actualites" },
+          { label: title },
+        ]}
       />
 
       {article.backgroundImage && (

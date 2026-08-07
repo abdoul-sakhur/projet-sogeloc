@@ -5,6 +5,7 @@ import { fetchProjectBySlug, strapiMediaUrl } from "@/lib/api";
 import RichText from "@/components/RichText";
 import { SITE_URL, pageMetadata } from "@/lib/seo";
 import Reveal from "@/components/Reveal";
+import Breadcrumb from "@/components/Breadcrumb";
 
 function projectDescription(project: NonNullable<Awaited<ReturnType<typeof fetchProjectBySlug>>>) {
   if (project.servicesText) return project.servicesText;
@@ -24,7 +25,8 @@ export async function generateMetadata({
   return pageMetadata(
     `/projets/${project.slug}`,
     `${project.title} | SOGELOC`,
-    projectDescription(project)
+    projectDescription(project),
+    project.coverImage ? strapiMediaUrl(project.coverImage.url) : undefined
   );
 }
 
@@ -52,6 +54,14 @@ export default async function ProjectDetailPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
+      <Breadcrumb
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Réalisations", href: "/projets" },
+          { label: project.title },
+        ]}
       />
 
       <section
@@ -98,7 +108,7 @@ export default async function ProjectDetailPage({
         <dl className="mt-8 grid gap-4 border-t border-border pt-8 sm:grid-cols-3">
           {project.client && (
             <div>
-              <dt className="font-heading text-xs font-bold uppercase tracking-wide text-primary">
+              <dt className="font-heading text-xs font-bold uppercase tracking-wide text-primary-ink">
                 Client
               </dt>
               <dd className="mt-1 text-sm text-body">{project.client}</dd>
@@ -106,7 +116,7 @@ export default async function ProjectDetailPage({
           )}
           {project.location && (
             <div>
-              <dt className="font-heading text-xs font-bold uppercase tracking-wide text-primary">
+              <dt className="font-heading text-xs font-bold uppercase tracking-wide text-primary-ink">
                 Localisation
               </dt>
               <dd className="mt-1 text-sm text-body">{project.location}</dd>
@@ -114,7 +124,7 @@ export default async function ProjectDetailPage({
           )}
           {project.servicesText && (
             <div>
-              <dt className="font-heading text-xs font-bold uppercase tracking-wide text-primary">
+              <dt className="font-heading text-xs font-bold uppercase tracking-wide text-primary-ink">
                 Services
               </dt>
               <dd className="mt-1 text-sm text-body">{project.servicesText}</dd>

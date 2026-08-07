@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { fetchProjects, strapiMediaUrl } from "@/lib/api";
+import { fetchProjects, fetchSettings, strapiMediaUrl } from "@/lib/api";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import { pageMetadata } from "@/lib/seo";
 import Reveal from "@/components/Reveal";
 
-export const metadata: Metadata = pageMetadata(
-  "/projets",
-  "Nos réalisations | SOGELOC",
-  "Galerie photos des réalisations de SOGELOC : chantiers, projets livrés et en cours."
-);
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await fetchSettings().catch(() => null);
+  return pageMetadata(
+    "/projets",
+    "Nos réalisations | SOGELOC",
+    "Galerie photos des réalisations de SOGELOC : chantiers, projets livrés et en cours.",
+    settings?.logo ? strapiMediaUrl(settings.logo.url) : undefined
+  );
+}
 
 export default async function ProjetsPage() {
   const projects = await fetchProjects().catch(() => []);

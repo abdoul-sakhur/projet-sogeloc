@@ -201,6 +201,15 @@ sudo certbot --nginx -d api.VOTRE_DOMAINE
 
 Certbot modifie automatiquement les configs Nginx pour rediriger en HTTPS.
 
+Ajoute ensuite l'en-tête HSTS dans le bloc `server` HTTPS de
+`/etc/nginx/sites-available/sogeloc-frontend` (créé par Certbot) :
+
+```nginx
+add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+```
+
+puis `sudo nginx -t && sudo systemctl reload nginx`.
+
 ## 13. Créer le compte admin Strapi et un token API
 
 1. Va sur `https://api.VOTRE_DOMAINE/admin`, crée ton compte admin (comme en local)

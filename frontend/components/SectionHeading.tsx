@@ -17,7 +17,7 @@ export default function SectionHeading({
     <div className={align === "center" ? "text-center" : "text-left"}>
       {subtitle && (
         <span
-          className={`block font-sans text-[15px] font-bold ${light ? "text-white/95" : "text-primary"}`}
+          className={`block font-sans text-[15px] font-bold ${light ? "text-white/95" : "text-primary-ink"}`}
         >
           {subtitle}
         </span>

@@ -13,9 +13,13 @@
   --color-primary: #f57024;
   --color-primary-hover: #690925;
   --color-primary-alt: #fba713;
+  /* Version assombrie de --color-primary pour du texte sur fond clair (ratio ~4,9:1, conforme WCAG AA) ;
+     l'orange plein reste réservé aux fonds pleins (boutons) et aux fonds sombres. */
+  --color-primary-ink: #b8541b;
   --color-dark: #030f23;
   --color-secondary: #690925;
-  --color-body: #9b9b9b;
+  --color-body: #6b6b6b;
+  --color-body-on-dark: #c9c9c9;
   --color-text-alt: #333333;
   --color-border: #eaeaea;
   --color-surface: #f9f9f9;

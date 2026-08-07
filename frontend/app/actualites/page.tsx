@@ -1,16 +1,26 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { fetchArticles, strapiMediaUrl } from "@/lib/api";
+import { fetchArticles, fetchSettings, strapiMediaUrl } from "@/lib/api";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import { pageMetadata } from "@/lib/seo";
 import Reveal from "@/components/Reveal";
 
-export const metadata: Metadata = pageMetadata(
-  "/actualites",
-  "Actualités | SOGELOC",
-  "Suivez l'actualité de SOGELOC : chantiers, vie de l'entreprise et actualités du secteur."
-);
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await fetchSettings().catch(() => null);
+  return {
+    ...pageMetadata(
+      "/actualites",
+      "Actualités | SOGELOC",
+      "Suivez l'actualité de SOGELOC : chantiers, vie de l'entreprise et actualités du secteur.",
+      settings?.logo ? strapiMediaUrl(settings.logo.url) : undefined
+    ),
+    alternates: {
+      canonical: "/actualites",
+      types: { "application/rss+xml": "/actualites/rss.xml" },
+    },
+  };
+}
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("fr-FR", {
@@ -62,7 +72,7 @@ export default async function ActualitesPage() {
                     </div>
                     <div className="p-5">
                       {article.category && (
-                        <span className="font-sans text-[13px] font-bold text-primary">
+                        <span className="font-sans text-[13px] font-bold text-primary-ink">
                           {article.category}
                         </span>
                       )}

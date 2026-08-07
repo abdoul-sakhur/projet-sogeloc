@@ -32,34 +32,58 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="text"
-        name="fullName"
-        required
-        placeholder="Nom complet"
-        className="w-full border border-border px-4 py-3 text-sm focus:border-primary focus:outline-none"
-      />
-      <input
-        type="email"
-        name="email"
-        required
-        placeholder="E-mail"
-        className="w-full border border-border px-4 py-3 text-sm focus:border-primary focus:outline-none"
-      />
-      <input
-        type="text"
-        name="phone"
-        required
-        placeholder="Téléphone"
-        className="w-full border border-border px-4 py-3 text-sm focus:border-primary focus:outline-none"
-      />
-      <textarea
-        name="message"
-        required
-        rows={5}
-        placeholder="Message!"
-        className="w-full border border-border px-4 py-3 text-sm focus:border-primary focus:outline-none"
-      />
+      <div>
+        <label htmlFor="fullName" className="mb-1 block text-sm font-semibold text-dark">
+          Nom complet
+        </label>
+        <input
+          id="fullName"
+          type="text"
+          name="fullName"
+          required
+          placeholder="Ex. Kouassi Yao"
+          className="w-full border border-border px-4 py-3 text-sm focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
+        />
+      </div>
+      <div>
+        <label htmlFor="email" className="mb-1 block text-sm font-semibold text-dark">
+          E-mail
+        </label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          required
+          placeholder="vous@exemple.com"
+          className="w-full border border-border px-4 py-3 text-sm focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
+        />
+      </div>
+      <div>
+        <label htmlFor="phone" className="mb-1 block text-sm font-semibold text-dark">
+          Téléphone
+        </label>
+        <input
+          id="phone"
+          type="text"
+          name="phone"
+          required
+          placeholder="+225 XX XX XXX XXX"
+          className="w-full border border-border px-4 py-3 text-sm focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
+        />
+      </div>
+      <div>
+        <label htmlFor="message" className="mb-1 block text-sm font-semibold text-dark">
+          Message
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows={5}
+          placeholder="Décrivez votre projet ou votre demande"
+          className="w-full border border-border px-4 py-3 text-sm focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
+        />
+      </div>
 
       <button
         type="submit"
@@ -71,7 +95,7 @@ export default function ContactForm() {
       </button>
 
       {status === "success" && (
-        <p className="text-sm text-primary">Votre message a bien été envoyé, merci.</p>
+        <p className="text-sm text-primary-ink">Votre message a bien été envoyé, merci.</p>
       )}
       {status === "error" && (
         <p className="text-sm text-red-600">

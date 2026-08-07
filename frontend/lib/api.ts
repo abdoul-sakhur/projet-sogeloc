@@ -9,7 +9,7 @@ import type {
   TeamMember,
 } from "./types";
 
-const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://localhost:1337";
+export const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://localhost:1337";
 
 // Population map for the Page dynamic zone: each section component needs its
 // own populate rule since Strapi does not deep-populate `on` blocks with `populate=*`.

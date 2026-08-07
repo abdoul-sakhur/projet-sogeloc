@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import CategoryLandingPage from "@/components/CategoryLandingPage";
 import { pageMetadata } from "@/lib/seo";
+import { fetchSettings, strapiMediaUrl } from "@/lib/api";
 
-export const metadata: Metadata = pageMetadata(
-  "/services/divers",
-  "Divers | SOGELOC",
-  "Création d'entreprise, événementiel, nettoyage, agence de voyages : SOGELOC vous accompagne au-delà du BTP, de la logistique et de la gestion."
-);
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await fetchSettings().catch(() => null);
+  return pageMetadata(
+    "/services/divers",
+    "Divers | SOGELOC",
+    "Création d'entreprise, événementiel, nettoyage, agence de voyages : SOGELOC vous accompagne au-delà du BTP, de la logistique et de la gestion.",
+    settings?.diversHeroImage
+      ? strapiMediaUrl(settings.diversHeroImage.url)
+      : settings?.logo
+        ? strapiMediaUrl(settings.logo.url)
+        : undefined
+  );
+}
 
 export default function DiversPage() {
   return (

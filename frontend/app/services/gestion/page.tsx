@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import CategoryLandingPage from "@/components/CategoryLandingPage";
 import { pageMetadata } from "@/lib/seo";
+import { fetchSettings, strapiMediaUrl } from "@/lib/api";
 
-export const metadata: Metadata = pageMetadata(
-  "/services/gestion",
-  "Gestion | SOGELOC",
-  "Gestion de biens immobiliers, de projets, des ressources humaines et administrative : SOGELOC gère vos activités avec rigueur et efficacité."
-);
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await fetchSettings().catch(() => null);
+  return pageMetadata(
+    "/services/gestion",
+    "Gestion | SOGELOC",
+    "Gestion de biens immobiliers, de projets, des ressources humaines et administrative : SOGELOC gère vos activités avec rigueur et efficacité.",
+    settings?.gestionHeroImage
+      ? strapiMediaUrl(settings.gestionHeroImage.url)
+      : settings?.logo
+        ? strapiMediaUrl(settings.logo.url)
+        : undefined
+  );
+}
 
 export default function GestionPage() {
   return (

@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Barlow, Roboto } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { fetchSettings, strapiMediaUrl } from "@/lib/api";
+import { API_URL, fetchSettings, strapiMediaUrl } from "@/lib/api";
 import { FALLBACK_SETTINGS } from "@/lib/constants";
 import { SITE_URL } from "@/lib/seo";
 import "./globals.css";
@@ -19,6 +19,10 @@ const roboto = Roboto({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
 });
+
+export const viewport: Viewport = {
+  themeColor: "#030f23",
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await fetchSettings().catch(() => null);
@@ -58,7 +62,7 @@ export default async function RootLayout({
 
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "GeneralContractor",
     name: siteName,
     url: SITE_URL,
     description: settings?.siteDescription || FALLBACK_SETTINGS.footerText,
@@ -67,9 +71,16 @@ export default async function RootLayout({
     address: {
       "@type": "PostalAddress",
       streetAddress: address,
+      addressLocality: "Abidjan",
       addressCountry: "CI",
     },
-    ...(settings?.logo ? { logo: strapiMediaUrl(settings.logo.url) } : {}),
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: settings?.mapLat ?? 5.3897,
+      longitude: settings?.mapLng ?? -3.9639,
+    },
+    areaServed: "CI",
+    ...(settings?.logo ? { logo: strapiMediaUrl(settings.logo.url), image: strapiMediaUrl(settings.logo.url) } : {}),
   };
 
   return (
@@ -77,6 +88,12 @@ export default async function RootLayout({
       lang="fr"
       className={`${barlow.variable} ${roboto.variable} h-full antialiased`}
     >
+      <head>
+        {/* Les images (hero, services, réalisations...) sont servies depuis l'origine
+            Strapi, distincte du frontend : anticiper le handshake DNS/TLS profite
+            au LCP, qui est presque toujours une image sur ce site. */}
+        <link rel="preconnect" href={API_URL} />
+      </head>
       <body className="min-h-full flex flex-col">
         <script
           type="application/ld+json"

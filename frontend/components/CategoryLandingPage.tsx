@@ -7,6 +7,14 @@ import ImagePlaceholder from "@/components/ImagePlaceholder";
 import ContactForm from "@/components/sections/ContactForm";
 import LinkPendingIndicator from "@/components/LinkPendingIndicator";
 import Reveal from "@/components/Reveal";
+import Breadcrumb from "@/components/Breadcrumb";
+
+const CATEGORY_LABEL: Record<Service["category"], string> = {
+  btp: "Bâtiments - Travaux Publics",
+  logistique: "Logistique",
+  gestion: "Gestion",
+  divers: "Divers",
+};
 
 export default async function CategoryLandingPage({
   category,
@@ -40,8 +48,35 @@ export default async function CategoryLandingPage({
   };
   const heroImage = heroImageByCategory[category];
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": services.map((service) => ({
+      "@type": "Service",
+      serviceType: service.title,
+      name: service.title,
+      description: service.shortDescription || service.description || undefined,
+      provider: { "@type": "GeneralContractor", name: "SOGELOC" },
+      areaServed: "CI",
+    })),
+  };
+
   return (
     <>
+      {services.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      )}
+
+      <Breadcrumb
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Services", href: "/services" },
+          { label: CATEGORY_LABEL[category] },
+        ]}
+      />
+
       {/* Hero */}
       <section
         className="relative overflow-hidden bg-dark bg-cover bg-center px-6 py-16 md:py-20"
@@ -136,7 +171,7 @@ export default async function CategoryLandingPage({
 
               const textBlock = (
                 <div>
-                  <span className="block font-sans text-[14px] font-bold text-primary">
+                  <span className="block font-sans text-[14px] font-bold text-primary-ink">
                     Nos prestations
                   </span>
                   <h3 className="mt-2 font-heading text-[24px] font-bold text-dark">

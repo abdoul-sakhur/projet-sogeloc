@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import CategoryLandingPage from "@/components/CategoryLandingPage";
 import { pageMetadata } from "@/lib/seo";
+import { fetchSettings, strapiMediaUrl } from "@/lib/api";
 
-export const metadata: Metadata = pageMetadata(
-  "/services/logistique",
-  "Logistique | SOGELOC",
-  "Transport, dédouanement, entreposage et gestion de stock : SOGELOC prend en charge l'ensemble de votre chaîne logistique."
-);
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await fetchSettings().catch(() => null);
+  return pageMetadata(
+    "/services/logistique",
+    "Logistique | SOGELOC",
+    "Transport, dédouanement, entreposage et gestion de stock : SOGELOC prend en charge l'ensemble de votre chaîne logistique.",
+    settings?.logistiqueHeroImage
+      ? strapiMediaUrl(settings.logistiqueHeroImage.url)
+      : settings?.logo
+        ? strapiMediaUrl(settings.logo.url)
+        : undefined
+  );
+}
 
 export default function LogistiquePage() {
   return (

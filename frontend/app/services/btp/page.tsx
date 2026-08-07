@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import CategoryLandingPage from "@/components/CategoryLandingPage";
 import { pageMetadata } from "@/lib/seo";
+import { fetchSettings, strapiMediaUrl } from "@/lib/api";
 
-export const metadata: Metadata = pageMetadata(
-  "/services/btp",
-  "Bâtiments - Travaux Publics | SOGELOC",
-  "Construction de bâtiments, routes et ponts : SOGELOC réalise vos projets de Bâtiments et Travaux Publics de la conception à la livraison."
-);
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await fetchSettings().catch(() => null);
+  return pageMetadata(
+    "/services/btp",
+    "Bâtiments - Travaux Publics | SOGELOC",
+    "Construction de bâtiments, routes et ponts : SOGELOC réalise vos projets de Bâtiments et Travaux Publics de la conception à la livraison.",
+    settings?.btpHeroImage
+      ? strapiMediaUrl(settings.btpHeroImage.url)
+      : settings?.logo
+        ? strapiMediaUrl(settings.logo.url)
+        : undefined
+  );
+}
 
 export default function BtpPage() {
   return (

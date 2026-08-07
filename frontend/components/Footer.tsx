@@ -101,7 +101,7 @@ export default async function Footer() {
         </div>
       </div>
 
-      <div className="bg-dark px-6 py-[20px] text-center text-xs text-body">
+      <div className="bg-dark px-6 py-[20px] text-center text-xs text-body-on-dark">
         © {new Date().getFullYear()} {siteName}. Tous droits réservés.
       </div>
     </footer>
