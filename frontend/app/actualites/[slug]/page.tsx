@@ -69,14 +69,6 @@ export default async function ArticleDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      <Breadcrumb
-        items={[
-          { label: "Accueil", href: "/" },
-          { label: "Actualités", href: "/actualites" },
-          { label: title },
-        ]}
-      />
-
       {article.backgroundImage && (
         <section
           className="relative flex min-h-[220px] items-center bg-dark bg-cover bg-center px-6 py-12 text-white"
@@ -91,6 +83,15 @@ export default async function ArticleDetailPage({
           </div>
         </section>
       )}
+
+      <Breadcrumb
+        offsetForFixedHeader={!article.backgroundImage}
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Actualités", href: "/actualites" },
+          { label: title },
+        ]}
+      />
 
       <section className="px-6 py-12 md:py-16">
       <div className="mx-auto max-w-[1140px]">

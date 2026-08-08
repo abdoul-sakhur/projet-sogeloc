@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_shared_certification_items",
+  "info": {
+    "displayName": "Certification Item",
+    "icon": "shield"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

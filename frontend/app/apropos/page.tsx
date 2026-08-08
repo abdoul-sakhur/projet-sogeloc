@@ -25,5 +25,10 @@ export default async function AproposPage() {
   const page = await fetchPage("apropos").catch(() => null);
   if (!page) notFound();
 
-  return <PageBuilder sections={page.sections} />;
+  return (
+    <PageBuilder
+      sections={page.sections}
+      breadcrumb={[{ label: "Accueil", href: "/" }, { label: "Présentation" }]}
+    />
+  );
 }

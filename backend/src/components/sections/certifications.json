@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_sections_certifications",
+  "info": {
+    "displayName": "Certifications",
+    "icon": "shield"
+  },
+  "options": {},
+  "attributes": {
+    "subtitle": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "items": {
+      "type": "component",
+      "component": "shared.certification-item",
+      "repeatable": true
+    }
+  }
+}

@@ -25,5 +25,10 @@ export default async function ContactPage() {
   const page = await fetchPage("contact").catch(() => null);
   if (!page) notFound();
 
-  return <PageBuilder sections={page.sections} />;
+  return (
+    <PageBuilder
+      sections={page.sections}
+      breadcrumb={[{ label: "Accueil", href: "/" }, { label: "Nous Contacter" }]}
+    />
+  );
 }

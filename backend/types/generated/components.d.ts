@@ -17,6 +17,19 @@ export interface SectionsAbout extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsCertifications extends Struct.ComponentSchema {
+  collectionName: 'components_sections_certifications';
+  info: {
+    displayName: 'Certifications';
+    icon: 'shield';
+  };
+  attributes: {
+    items: Schema.Attribute.Component<'shared.certification-item', true>;
+    subtitle: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface SectionsContact extends Struct.ComponentSchema {
   collectionName: 'components_sections_contacts';
   info: {
@@ -84,6 +97,19 @@ export interface SectionsPageTitle extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsPartnerLogos extends Struct.ComponentSchema {
+  collectionName: 'components_sections_partner_logos';
+  info: {
+    displayName: 'Partner Logos';
+    icon: 'picture';
+  };
+  attributes: {
+    logos: Schema.Attribute.Component<'shared.partner-logo', true>;
+    subtitle: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface SectionsProjectsGrid extends Struct.ComponentSchema {
   collectionName: 'components_sections_projects_grids';
   info: {
@@ -141,6 +167,35 @@ export interface SectionsTeamGrid extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsTestimonials extends Struct.ComponentSchema {
+  collectionName: 'components_sections_testimonials';
+  info: {
+    displayName: 'Testimonials';
+    icon: 'message';
+  };
+  attributes: {
+    subtitle: Schema.Attribute.String;
+    testimonials: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::testimonial.testimonial'
+    >;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface SharedCertificationItem extends Struct.ComponentSchema {
+  collectionName: 'components_shared_certification_items';
+  info: {
+    displayName: 'Certification Item';
+    icon: 'shield';
+  };
+  attributes: {
+    description: Schema.Attribute.String;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    logo: Schema.Attribute.Media<'images'>;
+  };
+}
+
 export interface SharedCounterItem extends Struct.ComponentSchema {
   collectionName: 'components_shared_counter_items';
   info: {
@@ -164,6 +219,19 @@ export interface SharedCta extends Struct.ComponentSchema {
     link: Schema.Attribute.String & Schema.Attribute.Required;
     style: Schema.Attribute.Enumeration<['primary', 'secondary']> &
       Schema.Attribute.DefaultTo<'primary'>;
+  };
+}
+
+export interface SharedPartnerLogo extends Struct.ComponentSchema {
+  collectionName: 'components_shared_partner_logos';
+  info: {
+    displayName: 'Partner Logo';
+    icon: 'picture';
+  };
+  attributes: {
+    logo: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    url: Schema.Attribute.String;
   };
 }
 
@@ -198,17 +266,22 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'sections.about': SectionsAbout;
+      'sections.certifications': SectionsCertifications;
       'sections.contact': SectionsContact;
       'sections.cta-banner': SectionsCtaBanner;
       'sections.domains-grid': SectionsDomainsGrid;
       'sections.hero': SectionsHero;
       'sections.page-title': SectionsPageTitle;
+      'sections.partner-logos': SectionsPartnerLogos;
       'sections.projects-grid': SectionsProjectsGrid;
       'sections.services-grid': SectionsServicesGrid;
       'sections.stats': SectionsStats;
       'sections.team-grid': SectionsTeamGrid;
+      'sections.testimonials': SectionsTestimonials;
+      'shared.certification-item': SharedCertificationItem;
       'shared.counter-item': SharedCounterItem;
       'shared.cta': SharedCta;
+      'shared.partner-logo': SharedPartnerLogo;
       'shared.seo': SharedSeo;
       'shared.social-links': SharedSocialLinks;
     }

@@ -1,4 +1,6 @@
 import type { Section } from "@/lib/types";
+import type { BreadcrumbItem } from "@/lib/seo";
+import Breadcrumb from "./Breadcrumb";
 import PageTitleBanner from "./sections/PageTitleBanner";
 import HeroSlider from "./sections/HeroSlider";
 import AboutSection from "./sections/AboutSection";
@@ -9,9 +11,19 @@ import TeamGrid from "./sections/TeamGrid";
 import StatsBanner from "./sections/StatsBanner";
 import ContactSection from "./sections/ContactSection";
 import CtaBanner from "./sections/CtaBanner";
+import Testimonials from "./sections/Testimonials";
+import Certifications from "./sections/Certifications";
+import PartnerLogos from "./sections/PartnerLogos";
 import Reveal from "./Reveal";
 
-export default function PageBuilder({ sections }: { sections: Section[] }) {
+export default function PageBuilder({
+  sections,
+  breadcrumb,
+}: {
+  sections: Section[];
+  /** Rendered right after "sections.page-title", if that section is present. */
+  breadcrumb?: BreadcrumbItem[];
+}) {
   return (
     <>
       {sections.map((section) => {
@@ -23,7 +35,12 @@ export default function PageBuilder({ sections }: { sections: Section[] }) {
           // Bannières au-dessus de la ligne de flottaison : visibles au chargement,
           // pas d'animation d'apparition au scroll.
           case "sections.page-title":
-            return <PageTitleBanner key={key} section={section} />;
+            return (
+              <div key={key}>
+                <PageTitleBanner section={section} />
+                {breadcrumb && <Breadcrumb items={breadcrumb} />}
+              </div>
+            );
           case "sections.hero":
             return <HeroSlider key={key} section={section} />;
           case "sections.about":
@@ -69,6 +86,24 @@ export default function PageBuilder({ sections }: { sections: Section[] }) {
             return (
               <Reveal key={key}>
                 <CtaBanner section={section} />
+              </Reveal>
+            );
+          case "sections.testimonials":
+            return (
+              <Reveal key={key}>
+                <Testimonials section={section} />
+              </Reveal>
+            );
+          case "sections.certifications":
+            return (
+              <Reveal key={key}>
+                <Certifications section={section} />
+              </Reveal>
+            );
+          case "sections.partner-logos":
+            return (
+              <Reveal key={key}>
+                <PartnerLogos section={section} />
               </Reveal>
             );
           default:

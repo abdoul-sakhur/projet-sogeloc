@@ -1,7 +1,7 @@
 import type { Core } from '@strapi/strapi';
 import seed from './bootstrap-seed';
 
-const PUBLIC_READ_COLLECTIONS = ['page', 'service', 'project', 'team-member', 'hero-slide', 'article'];
+const PUBLIC_READ_COLLECTIONS = ['page', 'service', 'project', 'team-member', 'hero-slide', 'article', 'testimonial'];
 
 export default {
   /**

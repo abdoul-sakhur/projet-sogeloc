@@ -56,14 +56,6 @@ export default async function ProjectDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      <Breadcrumb
-        items={[
-          { label: "Accueil", href: "/" },
-          { label: "Réalisations", href: "/projets" },
-          { label: project.title },
-        ]}
-      />
-
       <section
         className="relative flex min-h-[280px] items-center bg-dark bg-cover bg-center px-6 py-16 text-white"
         style={
@@ -83,6 +75,14 @@ export default async function ProjectDetailPage({
           )}
         </div>
       </section>
+
+      <Breadcrumb
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Réalisations", href: "/projets" },
+          { label: project.title },
+        ]}
+      />
 
       {project.gallery && project.gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 py-16">

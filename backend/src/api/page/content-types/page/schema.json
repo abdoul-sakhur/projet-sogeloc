@@ -38,7 +38,10 @@
         "sections.team-grid",
         "sections.stats",
         "sections.contact",
-        "sections.cta-banner"
+        "sections.cta-banner",
+        "sections.testimonials",
+        "sections.certifications",
+        "sections.partner-logos"
       ]
     }
   }

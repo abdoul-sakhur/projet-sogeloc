@@ -5,6 +5,7 @@ import { fetchProjects, fetchSettings, strapiMediaUrl } from "@/lib/api";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import { pageMetadata } from "@/lib/seo";
 import Reveal from "@/components/Reveal";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await fetchSettings().catch(() => null);
@@ -31,6 +32,8 @@ export default async function ProjetsPage() {
           </h1>
         </div>
       </section>
+
+      <Breadcrumb items={[{ label: "Accueil", href: "/" }, { label: "Réalisations" }]} />
 
       <section className="px-6 py-16">
         <div className="mx-auto max-w-[1140px]">

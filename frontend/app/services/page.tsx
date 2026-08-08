@@ -25,5 +25,10 @@ export default async function ServicesPage() {
   const page = await fetchPage("services").catch(() => null);
   if (!page) notFound();
 
-  return <PageBuilder sections={page.sections} />;
+  return (
+    <PageBuilder
+      sections={page.sections}
+      breadcrumb={[{ label: "Accueil", href: "/" }, { label: "Nos Services" }]}
+    />
+  );
 }

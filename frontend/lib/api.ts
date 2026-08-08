@@ -27,6 +27,9 @@ const PAGE_POPULATE = {
       "sections.stats": { populate: ["backgroundImage", "counters"] },
       "sections.contact": true,
       "sections.cta-banner": { populate: ["backgroundImage", "image", "cta"] },
+      "sections.testimonials": { populate: { testimonials: { populate: ["photo"] } } },
+      "sections.certifications": { populate: { items: { populate: ["logo"] } } },
+      "sections.partner-logos": { populate: { logos: { populate: ["logo"] } } },
     },
   },
 };

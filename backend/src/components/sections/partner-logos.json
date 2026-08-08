@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_sections_partner_logos",
+  "info": {
+    "displayName": "Partner Logos",
+    "icon": "picture"
+  },
+  "options": {},
+  "attributes": {
+    "subtitle": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "logos": {
+      "type": "component",
+      "component": "shared.partner-logo",
+      "repeatable": true
+    }
+  }
+}

@@ -100,6 +100,31 @@ export interface TeamMember {
   order: number;
 }
 
+export interface Testimonial {
+  id: number;
+  documentId: string;
+  authorName: string;
+  authorRole?: string;
+  company?: string;
+  quote: string;
+  photo?: Media;
+  order: number;
+}
+
+export interface CertificationItem {
+  id: number;
+  label: string;
+  description?: string;
+  logo?: Media;
+}
+
+export interface PartnerLogo {
+  id: number;
+  name: string;
+  logo: Media;
+  url?: string;
+}
+
 interface SectionBase<TComponent extends string> {
   id: number;
   __component: TComponent;
@@ -170,6 +195,24 @@ export interface CtaBannerSection extends SectionBase<"sections.cta-banner"> {
   cta?: Cta;
 }
 
+export interface TestimonialsSection extends SectionBase<"sections.testimonials"> {
+  subtitle?: string;
+  title?: string;
+  testimonials: Testimonial[];
+}
+
+export interface CertificationsSection extends SectionBase<"sections.certifications"> {
+  subtitle?: string;
+  title?: string;
+  items: CertificationItem[];
+}
+
+export interface PartnerLogosSection extends SectionBase<"sections.partner-logos"> {
+  subtitle?: string;
+  title?: string;
+  logos: PartnerLogo[];
+}
+
 export type Section =
   | PageTitleSection
   | HeroSection
@@ -180,7 +223,10 @@ export type Section =
   | TeamGridSection
   | StatsSection
   | ContactSection
-  | CtaBannerSection;
+  | CtaBannerSection
+  | TestimonialsSection
+  | CertificationsSection
+  | PartnerLogosSection;
 
 export interface Page {
   id: number;

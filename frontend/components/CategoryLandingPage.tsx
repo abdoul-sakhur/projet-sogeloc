@@ -69,28 +69,16 @@ export default async function CategoryLandingPage({
         />
       )}
 
-      <Breadcrumb
-        items={[
-          { label: "Accueil", href: "/" },
-          { label: "Services", href: "/services" },
-          { label: CATEGORY_LABEL[category] },
-        ]}
-      />
-
       {/* Hero */}
       <section
-        className="relative overflow-hidden bg-dark bg-cover bg-center px-6 py-16 md:py-20"
-        style={
-          heroImage
-            ? { backgroundImage: `url(${strapiMediaUrl(heroImage.url)})` }
-            : { backgroundImage: "linear-gradient(135deg, var(--color-primary-alt), var(--color-primary), var(--color-dark))" }
-        }
+        className="relative overflow-hidden bg-dark bg-cover bg-center px-6 pt-[140px] pb-16 md:pt-[180px] md:pb-20"
+        style={heroImage ? { backgroundImage: `url(${strapiMediaUrl(heroImage.url)})` } : undefined}
       >
         <div className="absolute inset-0 bg-dark/60" />
 
         <div className="relative mx-auto max-w-[1140px]">
           <div className="grid gap-6 md:grid-cols-2 md:items-start md:gap-10">
-            <h1 className="font-heading text-[32px] font-bold leading-tight text-white md:text-[46px]">
+            <h1 className="font-heading text-[32px] font-semibold leading-tight text-white md:text-[46px]">
               {heroTitle}
             </h1>
             <p className="text-[16px] leading-[27px] text-white/85 md:pt-2">{heroDescription}</p>
@@ -114,6 +102,14 @@ export default async function CategoryLandingPage({
           </div>
         </div>
       </section>
+
+      <Breadcrumb
+        items={[
+          { label: "Accueil", href: "/" },
+          { label: "Nos Services", href: "/services" },
+          { label: CATEGORY_LABEL[category] },
+        ]}
+      />
 
       {/* Bandeau offres */}
       {highlights.length > 0 && (
