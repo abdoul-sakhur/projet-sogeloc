@@ -66,7 +66,8 @@ export default async function ContactSection({ section }: { section: ContactSect
                   title="Localisation SOGELOC"
                   className="h-full w-full border-0"
                   loading="lazy"
-                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.01}%2C${lat - 0.01}%2C${lng + 0.01}%2C${lat + 0.01}&marker=${lat}%2C${lng}&layer=mapnik`}
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={`https://www.google.com/maps?q=${lat},${lng}&z=15&output=embed`}
                 />
               </div>
             )}
