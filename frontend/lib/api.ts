@@ -9,7 +9,18 @@ import type {
   TeamMember,
 } from "./types";
 
+// Public URL: baked into the client bundle, used for anything the browser
+// fetches directly (media <img src>, the contact form's POST).
 export const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL ?? "http://localhost:1337";
+
+// Server-only URL used by Server Component data fetching (strapiFetch below).
+// Falls back to the public URL, which is correct everywhere except Docker
+// Compose: there, the frontend container can't reach Strapi via "localhost"
+// (that's its own loopback) and needs the service name instead
+// (STRAPI_INTERNAL_URL=http://backend:1337, set by docker-compose.dev.yml /
+// docker-compose.yml), while the browser still needs the publicly-reachable
+// NEXT_PUBLIC_STRAPI_API_URL.
+const SERVER_API_URL = process.env.STRAPI_INTERNAL_URL ?? API_URL;
 
 // Population map for the Page dynamic zone: each section component needs its
 // own populate rule since Strapi does not deep-populate `on` blocks with `populate=*`.
@@ -36,7 +47,7 @@ const PAGE_POPULATE = {
 
 async function strapiFetch<T>(path: string, query?: Record<string, unknown>): Promise<T> {
   const queryString = query ? `?${qs.stringify(query, { encodeValuesOnly: true })}` : "";
-  const res = await fetch(`${API_URL}/api${path}${queryString}`, {
+  const res = await fetch(`${SERVER_API_URL}/api${path}${queryString}`, {
     headers: {
       "Content-Type": "application/json",
       ...(process.env.STRAPI_API_TOKEN

@@ -8,3 +8,6 @@ build
 !.env.example
 .git
 npm-debug.log
+# Uploaded media lives on a persistent bind mount/volume in docker-compose,
+# never baked into the image (would bloat it and go stale on rebuild).
+public/uploads

@@ -29,6 +29,9 @@ ENV NODE_ENV=production
 RUN npm ci
 COPY . .
 RUN npm run build
+# devDependencies (typescript, @types/*...) were needed to build but not to
+# run — prune them so they don't bloat the production image below.
+RUN npm prune --omit=dev
 
 # -----------------------------------------------------------------------
 # production — slim runtime image, no compiler toolchain.

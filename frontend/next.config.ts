@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Self-contained server.js + pruned node_modules trace, needed for a lean
+  // Docker production image (see frontend/Dockerfile).
+  output: "standalone",
   turbopack: {
     root: path.join(__dirname),
   },

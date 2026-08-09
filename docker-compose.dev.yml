@@ -1,0 +1,33 @@
+# Dev override — hot reload, source bind-mounted, direct port access (bypasses
+# nginx for faster iteration; nginx still starts and works if you want to test
+# through it too).
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+services:
+  backend:
+    build:
+      target: dev
+    volumes:
+      - ./backend:/opt/app
+      - /opt/app/node_modules
+      # ./backend is bind-mounted whole above, so .tmp/ and public/uploads/
+      # (defined in docker-compose.yml) are already covered — not redeclared.
+    ports:
+      - "127.0.0.1:1337:1337"
+
+  frontend:
+    build:
+      target: dev
+    environment:
+      # The frontend container can't reach Strapi via "localhost" (that's its
+      # own loopback) — server-side fetches need the Docker service name.
+      # The browser keeps using NEXT_PUBLIC_STRAPI_API_URL=http://localhost:1337
+      # from frontend/.env.local, which stays correct since nginx/the dev
+      # port mapping both publish that port on the host.
+      STRAPI_INTERNAL_URL: http://backend:1337
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "127.0.0.1:3000:3000"
