@@ -25,9 +25,14 @@ const nextConfig: NextConfig = {
   images: {
     // Next.js refuses to proxy-optimize images whose host resolves to a
     // private/loopback IP (SSRF protection) — that includes "localhost",
-    // which is where Strapi runs in dev. Production Strapi will be on a
-    // real public domain, so optimization stays on there.
-    unoptimized: process.env.NODE_ENV === "development",
+    // which is where Strapi runs in dev. It also bites the VPS's own
+    // hostname (srv1896005.hstgr.cloud) when accessed *from that same VPS*,
+    // since it resolves to 127.0.1.1 there — hence the extra env-driven
+    // escape hatch below, set via NEXT_IMAGE_UNOPTIMIZED in frontend/.env.local.
+    // Remove once a real domain (not the VPS's own hostname) is in use.
+    unoptimized:
+      process.env.NODE_ENV === "development" ||
+      process.env.NEXT_IMAGE_UNOPTIMIZED === "true",
     remotePatterns: [
       {
         protocol: "http",
