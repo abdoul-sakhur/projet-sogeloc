@@ -48,7 +48,12 @@ export default function HeroSlider({ section }: { section: HeroSection }) {
               {/* Voile sombre léger (10%), fidèle à .bg-overlay-2 du thème d'origine */}
               <div className="absolute inset-0 bg-dark/10" />
 
-              <div className="relative flex h-full items-center">
+              {/* pt- reserves space for the fixed header (h-[80px] mobile /
+                  h-[100px] md+, see HeaderShell.tsx): items-center alone
+                  isn't enough on mobile, where min-h-[280px] makes the box
+                  short enough that a centered multi-line title can start
+                  above the header and get overlapped by it. */}
+              <div className="relative flex h-full items-center pt-[90px] md:pt-[110px]">
                 <div className="mx-auto w-full max-w-[1140px] px-6">
                   <div className="max-w-[650px]">
                     {index === 0 ? (
