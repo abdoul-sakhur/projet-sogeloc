@@ -18,7 +18,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=projet-sogeloc_internal"
-      - "traefik.http.routers.sogeloc-backend.rule=Host(`srv1896005.hstgr.cloud`) && PathPrefix(`/admin`, `/api`, `/uploads`, `/content-manager`, `/content-type-builder`, `/upload`, `/users-permissions`, `/i18n`, `/_health`)"
+      - "traefik.http.routers.sogeloc-backend.rule=Host(`srv1896005.hstgr.cloud`) && (PathPrefix(`/admin`) || PathPrefix(`/api`) || PathPrefix(`/uploads`) || PathPrefix(`/content-manager`) || PathPrefix(`/content-type-builder`) || PathPrefix(`/upload`) || PathPrefix(`/users-permissions`) || PathPrefix(`/i18n`) || PathPrefix(`/_health`))"
       - "traefik.http.routers.sogeloc-backend.entrypoints=websecure"
       - "traefik.http.routers.sogeloc-backend.tls.certresolver=letsencrypt"
       - "traefik.http.routers.sogeloc-backend.priority=100"
