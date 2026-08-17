@@ -2,10 +2,17 @@
 #   docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 #
 # Data safety: the Strapi database (SQLite) and uploaded media are bind-mounted
-# from ./backend/.tmp and ./backend/public/uploads — the exact files already
-# on disk — so containerizing does NOT start from an empty database. Nothing
-# but nginx publishes a host port; frontend/backend are only reachable inside
-# the "internal" network, reverse-proxied by nginx.
+# from ./backend/.tmp and ./backend/public — the exact files already on disk —
+# so containerizing does NOT start from an empty database. Nothing but nginx
+# publishes a host port; frontend/backend are only reachable inside the
+# "internal" network, reverse-proxied by nginx.
+#
+# The whole of ./backend/public is mounted (not just its uploads/ subfolder):
+# Strapi's `transfer` command backs up uploads/ by renaming it before
+# restoring, and a rename can't cross a mount-point boundary (EXDEV) — if
+# uploads/ were its own separate mount nested under an unmounted public/,
+# that rename would fail even though writes to either path work fine
+# individually.
 
 services:
   backend:
@@ -19,7 +26,7 @@ services:
       DATABASE_FILENAME: .tmp/data.db
     volumes:
       - ./backend/.tmp:/opt/app/.tmp
-      - ./backend/public/uploads:/opt/app/public/uploads
+      - ./backend/public:/opt/app/public
     networks:
       - internal
     healthcheck:
