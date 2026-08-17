@@ -45,13 +45,13 @@ const nextConfig: NextConfig = {
         hostname: "*.sogeloc.com",
         pathname: "/uploads/**",
       },
-      // Temporary: VPS accessed directly by hostname:port before a real
-      // domain is pointed at it (see docker-compose.vps.yml). Remove once
-      // *.sogeloc.com is live and NEXT_PUBLIC_STRAPI_API_URL points there.
+      // Temporary: VPS accessed directly by its own hostname (behind
+      // Traefik on 443, see docker-compose.vps.yml) before a real domain is
+      // pointed at it. Remove once *.sogeloc.com is live and
+      // NEXT_PUBLIC_STRAPI_API_URL points there.
       {
-        protocol: "http",
+        protocol: "https",
         hostname: "srv1896005.hstgr.cloud",
-        port: "8083",
         pathname: "/uploads/**",
       },
     ],
