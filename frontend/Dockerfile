@@ -31,6 +31,12 @@ ARG NEXT_PUBLIC_STRAPI_API_URL
 ARG NEXT_PUBLIC_SITE_URL
 ENV NEXT_PUBLIC_STRAPI_API_URL=$NEXT_PUBLIC_STRAPI_API_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+# next.config.ts is evaluated while `next build` runs, not at container
+# startup — env_file/environment (docker-compose.yml, runtime-only) are too
+# late for anything read there, including NEXT_IMAGE_UNOPTIMIZED. Same
+# build-arg treatment as the NEXT_PUBLIC_* vars above.
+ARG NEXT_IMAGE_UNOPTIMIZED
+ENV NEXT_IMAGE_UNOPTIMIZED=$NEXT_IMAGE_UNOPTIMIZED
 RUN npm run build
 
 # -----------------------------------------------------------------------
