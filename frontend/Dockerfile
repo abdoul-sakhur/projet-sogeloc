@@ -20,8 +20,12 @@ CMD ["npm", "run", "dev"]
 # time, so they must be passed as build args (docker-compose.yml does this).
 # -----------------------------------------------------------------------
 FROM base AS build
-ENV NODE_ENV=production
+# npm skips devDependencies when NODE_ENV=production is already set at
+# install time — @tailwindcss/postcss (needed to compile globals.css) and
+# typescript are both devDependencies, so NODE_ENV is set *after* npm ci,
+# only for the build/runtime step itself.
 RUN npm ci
+ENV NODE_ENV=production
 COPY . .
 ARG NEXT_PUBLIC_STRAPI_API_URL
 ARG NEXT_PUBLIC_SITE_URL

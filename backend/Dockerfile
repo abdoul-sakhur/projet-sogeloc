@@ -25,8 +25,11 @@ CMD ["npm", "run", "develop"]
 # build — install prod deps and compile the admin panel + server code.
 # -----------------------------------------------------------------------
 FROM base AS build
-ENV NODE_ENV=production
+# npm skips devDependencies when NODE_ENV=production is already set at
+# install time — typescript etc. are devDependencies and needed to build,
+# so NODE_ENV is set *after* npm ci, only for the build step itself.
 RUN npm ci
+ENV NODE_ENV=production
 COPY . .
 RUN npm run build
 # devDependencies (typescript, @types/*...) were needed to build but not to
