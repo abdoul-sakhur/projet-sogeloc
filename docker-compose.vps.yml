@@ -1,0 +1,22 @@
+# Override for hosting on a VPS that already runs other projects (Docker
+# containers on other ports, a Traefik instance, etc.) — publishes
+# backend/frontend directly on dedicated host ports instead of through the
+# containerized nginx service (which routes by domain name via server_name
+# and isn't useful yet without a real domain pointed at this VPS).
+#
+# Pick ports that don't collide with anything already running — check first:
+#   docker ps --format '{{.Names}}: {{.Ports}}'
+# The values below (8082/8083) are just an example; change them if taken.
+#
+# Usage (nginx intentionally left out of this command — add it back once a
+# domain exists and deploy/nginx.conf is updated to route to these services):
+#   docker compose -f docker-compose.yml -f docker-compose.vps.yml up -d --build backend frontend
+
+services:
+  backend:
+    ports:
+      - "8083:1337"
+
+  frontend:
+    ports:
+      - "8082:3000"
