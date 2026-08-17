@@ -85,7 +85,6 @@ export default async function ArticleDetailPage({
       )}
 
       <Breadcrumb
-        offsetForFixedHeader={!article.backgroundImage}
         items={[
           { label: "Accueil", href: "/" },
           { label: "Actualités", href: "/actualites" },

@@ -36,7 +36,7 @@ export default async function ActualitesPage() {
 
   return (
     <>
-      <section className="bg-dark px-6 pt-[140px] pb-16 md:pt-[180px] md:pb-20">
+      <section className="bg-dark px-6 py-16 md:py-20">
         <div className="mx-auto max-w-[1140px]">
           <span className="block font-heading text-[15px] font-bold uppercase text-primary">
             Actualités

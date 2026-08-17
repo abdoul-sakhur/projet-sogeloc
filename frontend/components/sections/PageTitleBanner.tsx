@@ -4,7 +4,7 @@ import { strapiMediaUrl } from "@/lib/api";
 export default function PageTitleBanner({ section }: { section: PageTitleSection }) {
   return (
     <section
-      className="relative bg-dark bg-cover bg-center bg-fixed pt-[100px] pb-[50px] px-6 sm:pt-[200px] sm:pb-[100px] lg:pt-[265px] lg:pb-[70px]"
+      className="relative bg-dark bg-cover bg-center bg-fixed pt-[50px] pb-[50px] px-6 sm:pt-[100px] sm:pb-[100px] lg:pt-[70px] lg:pb-[70px]"
       style={
         section.backgroundImage
           ? { backgroundImage: `url(${strapiMediaUrl(section.backgroundImage.url)})` }

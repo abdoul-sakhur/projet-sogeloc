@@ -71,7 +71,7 @@ export default async function CategoryLandingPage({
 
       {/* Hero */}
       <section
-        className="relative overflow-hidden bg-dark bg-cover bg-center px-6 pt-[140px] pb-16 md:pt-[180px] md:pb-20"
+        className="relative overflow-hidden bg-dark bg-cover bg-center px-6 py-16 md:py-20"
         style={heroImage ? { backgroundImage: `url(${strapiMediaUrl(heroImage.url)})` } : undefined}
       >
         <div className="absolute inset-0 bg-dark/60" />

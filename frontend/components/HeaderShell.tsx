@@ -32,8 +32,8 @@ export default function HeaderShell({
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        opaque ? "border-b border-border bg-white shadow-[0_3px_4px_rgba(0,0,0,0.07)]" : "border-b border-white/15 bg-transparent"
+      className={`sticky top-0 z-50 transition-colors duration-300 ${
+        opaque ? "border-b border-border bg-white shadow-[0_3px_4px_rgba(0,0,0,0.07)]" : "border-b border-white/15 bg-dark"
       }`}
     >
       <div className="mx-auto flex h-[80px] max-w-[1140px] items-center justify-between px-6 md:h-[100px]">
