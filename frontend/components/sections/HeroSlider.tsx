@@ -32,7 +32,7 @@ export default function HeroSlider({ section }: { section: HeroSection }) {
   if (slides.length === 0) return null;
 
   return (
-    <section className="relative aspect-[1680/640] max-h-[640px] min-h-[280px] w-full overflow-hidden bg-dark">
+    <section className="relative aspect-[1680/640] max-h-[640px] min-h-[440px] w-full overflow-hidden bg-dark sm:min-h-[280px]">
       <div className="h-full overflow-hidden" ref={emblaRef}>
         <div className="flex h-full">
           {slides.map((slide, index) => (
@@ -48,12 +48,19 @@ export default function HeroSlider({ section }: { section: HeroSection }) {
               {/* Voile sombre léger (10%), fidèle à .bg-overlay-2 du thème d'origine */}
               <div className="absolute inset-0 bg-dark/10" />
 
-              {/* pt- reserves space for the fixed header (h-[80px] mobile /
-                  h-[100px] md+, see HeaderShell.tsx): items-center alone
-                  isn't enough on mobile, where min-h-[280px] makes the box
-                  short enough that a centered multi-line title can start
-                  above the header and get overlapped by it. */}
-              <div className="relative flex h-full items-center pt-[90px] md:pt-[110px]">
+              {/* Anchored to the bottom on mobile instead of vertically
+                  centered: centering math depends on guessing the text
+                  block's rendered height, which varies with title length,
+                  line-wrapping and the device's own text-size/accessibility
+                  settings — easy to get wrong, and a wrong guess overlaps
+                  the fixed header (h-[80px] mobile, HeaderShell.tsx).
+                  Bottom-anchoring can't overlap the header no matter how
+                  tall the text block ends up. md+ has enough height to
+                  center comfortably instead. */}
+              {/* pb- also clears the pagination dots (absolute bottom-8
+                  below), not just the box edge, so the bottom-anchored text
+                  doesn't sit under them. */}
+              <div className="relative flex h-full items-end pb-16 md:items-center md:pb-0 md:pt-[110px]">
                 <div className="mx-auto w-full max-w-[1140px] px-6">
                   <div className="max-w-[650px]">
                     {index === 0 ? (
