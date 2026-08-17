@@ -1,22 +1,39 @@
-# Override for hosting on a VPS that already runs other projects (Docker
-# containers on other ports, a Traefik instance, etc.) — publishes
-# backend/frontend directly on dedicated host ports instead of through the
-# containerized nginx service (which routes by domain name via server_name
-# and isn't useful yet without a real domain pointed at this VPS).
+# Override for hosting on a VPS that already runs other projects, including
+# a shared Traefik instance (host network, Docker-label discovery, its own
+# Let's Encrypt resolver named "letsencrypt" — see /docker/traefik-rmu2 on
+# the server). Traefik terminates HTTPS for both services under one
+# hostname: the frontend gets the bare Host() match, the backend (Strapi
+# admin/API/uploads) gets a PathPrefix match with higher priority so it
+# wins over the frontend's catch-all for those specific paths.
 #
-# Pick ports that don't collide with anything already running — check first:
-#   docker ps --format '{{.Names}}: {{.Ports}}'
-# The values below (8082/8083) are just an example; change them if taken.
-#
-# Usage (nginx intentionally left out of this command — add it back once a
-# domain exists and deploy/nginx.conf is updated to route to these services):
-#   docker compose -f docker-compose.yml -f docker-compose.vps.yml up -d --build backend frontend
+# Usage: docker compose -f docker-compose.yml -f docker-compose.vps.yml up -d --build backend frontend
+# (nginx intentionally left out — Traefik is this VPS's reverse proxy, not it)
 
 services:
   backend:
+    # Kept for direct HTTP access during the HTTPS cutover; remove once
+    # Traefik routing at https://srv1896005.hstgr.cloud is confirmed working.
     ports:
       - "8083:1337"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=projet-sogeloc_internal"
+      - "traefik.http.routers.sogeloc-backend.rule=Host(`srv1896005.hstgr.cloud`) && PathPrefix(`/admin`, `/api`, `/uploads`, `/content-manager`, `/content-type-builder`, `/upload`, `/users-permissions`, `/i18n`, `/_health`)"
+      - "traefik.http.routers.sogeloc-backend.entrypoints=websecure"
+      - "traefik.http.routers.sogeloc-backend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sogeloc-backend.priority=100"
+      - "traefik.http.services.sogeloc-backend.loadbalancer.server.port=1337"
 
   frontend:
+    # Kept for direct HTTP access during the HTTPS cutover; remove once
+    # Traefik routing at https://srv1896005.hstgr.cloud is confirmed working.
     ports:
       - "8082:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=projet-sogeloc_internal"
+      - "traefik.http.routers.sogeloc-frontend.rule=Host(`srv1896005.hstgr.cloud`)"
+      - "traefik.http.routers.sogeloc-frontend.entrypoints=websecure"
+      - "traefik.http.routers.sogeloc-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.sogeloc-frontend.priority=1"
+      - "traefik.http.services.sogeloc-frontend.loadbalancer.server.port=3000"
