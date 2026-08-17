@@ -32,7 +32,10 @@ export default function HeroSlider({ section }: { section: HeroSection }) {
   if (slides.length === 0) return null;
 
   return (
-    <section className="relative aspect-[1680/640] max-h-[640px] min-h-[280px] w-full overflow-hidden bg-dark">
+    <section
+      className="relative w-full overflow-hidden bg-dark"
+      style={{ height: "clamp(280px, 38.1vw, 640px)" }}
+    >
       <div className="h-full overflow-hidden" ref={emblaRef}>
         <div className="flex h-full">
           {slides.map((slide, index) => (
