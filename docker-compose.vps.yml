@@ -11,10 +11,6 @@
 
 services:
   backend:
-    # Kept for direct HTTP access during the HTTPS cutover; remove once
-    # Traefik routing at https://srv1896005.hstgr.cloud is confirmed working.
-    ports:
-      - "8083:1337"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=projet-sogeloc_internal"
@@ -25,10 +21,6 @@ services:
       - "traefik.http.services.sogeloc-backend.loadbalancer.server.port=1337"
 
   frontend:
-    # Kept for direct HTTP access during the HTTPS cutover; remove once
-    # Traefik routing at https://srv1896005.hstgr.cloud is confirmed working.
-    ports:
-      - "8082:3000"
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=projet-sogeloc_internal"
