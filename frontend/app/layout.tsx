@@ -24,6 +24,15 @@ export const viewport: Viewport = {
   themeColor: "#030f23",
 };
 
+// Every page fetches content from Strapi (CMS-driven site). Forcing dynamic
+// rendering site-wide (inherited from the root layout by every route) means
+// `next build` never needs Strapi to be reachable to prerender pages — it
+// only renders on request, which matters in Docker where the backend
+// container isn't guaranteed to be reachable from an isolated build stage.
+// Strapi responses are still cached per-request via `next: { revalidate }`
+// in lib/api.ts, so this doesn't disable that caching, only full static HTML.
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await fetchSettings().catch(() => null);
   const siteName = settings?.siteName || FALLBACK_SETTINGS.siteName;

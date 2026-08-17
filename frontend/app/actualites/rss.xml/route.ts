@@ -1,6 +1,11 @@
 import { fetchArticles } from "@/lib/api";
 import { SITE_URL } from "@/lib/seo";
 
+// Fetches Strapi content directly, independent of the root layout's route
+// config — needs its own override so `next build` doesn't try (and fail) to
+// prerender this when Strapi isn't reachable at build time (see layout.tsx).
+export const dynamic = "force-dynamic";
+
 function escapeXml(value: string) {
   return value
     .replace(/&/g, "&amp;")

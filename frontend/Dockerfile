@@ -31,15 +31,6 @@ ARG NEXT_PUBLIC_STRAPI_API_URL
 ARG NEXT_PUBLIC_SITE_URL
 ENV NEXT_PUBLIC_STRAPI_API_URL=$NEXT_PUBLIC_STRAPI_API_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
-# `next build` prerenders pages that fetch Strapi data, so it needs a
-# reachable backend at build time — NEXT_PUBLIC_STRAPI_API_URL is a
-# publicly-facing URL that isn't reachable from inside the build container's
-# isolated network, so this build-only override points server-side fetches
-# (see lib/api.ts) at the Strapi container directly. Passed as a build arg
-# and only meaningful when the build runs with --network attached to the
-# same Docker Compose network as an already-running "backend" (docker-compose.yml).
-ARG STRAPI_INTERNAL_URL
-ENV STRAPI_INTERNAL_URL=$STRAPI_INTERNAL_URL
 RUN npm run build
 
 # -----------------------------------------------------------------------

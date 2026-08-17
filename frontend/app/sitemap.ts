@@ -2,6 +2,11 @@ import type { MetadataRoute } from "next";
 import { fetchArticles, fetchProjects } from "@/lib/api";
 import { SITE_URL } from "@/lib/seo";
 
+// Fetches Strapi content directly, independent of the root layout's route
+// config — needs its own override so `next build` doesn't try (and fail) to
+// prerender this when Strapi isn't reachable at build time (see layout.tsx).
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
     "",

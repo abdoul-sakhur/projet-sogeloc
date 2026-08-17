@@ -44,13 +44,6 @@ services:
       args:
         NEXT_PUBLIC_STRAPI_API_URL: ${NEXT_PUBLIC_STRAPI_API_URL:-http://localhost:1337}
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
-        # `next build` prerenders pages that fetch Strapi data — it needs to
-        # reach the backend, which the public URL above can't do from inside
-        # an isolated build container. `network: internal` below attaches
-        # the build to the same Compose network as the (already-running)
-        # backend service, so this internal DNS name resolves.
-        STRAPI_INTERNAL_URL: http://backend:1337
-      network: internal
     restart: unless-stopped
     env_file: ./frontend/.env.local
     depends_on:

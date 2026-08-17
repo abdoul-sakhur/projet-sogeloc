@@ -2,6 +2,11 @@ import type { MetadataRoute } from "next";
 import { fetchSettings } from "@/lib/api";
 import { FALLBACK_SETTINGS } from "@/lib/constants";
 
+// Fetches Strapi content directly, independent of the root layout's route
+// config — needs its own override so `next build` doesn't try (and fail) to
+// prerender this when Strapi isn't reachable at build time (see layout.tsx).
+export const dynamic = "force-dynamic";
+
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   const settings = await fetchSettings().catch(() => null);
   const siteName = settings?.siteName || FALLBACK_SETTINGS.siteName;
